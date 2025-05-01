@@ -20,6 +20,15 @@ import { onMounted, ref } from "vue";
 const authStore = useAuthStore();
 
 function authenticate() {
+  if (authStore.buttonLabel == "sign in") {
+    authStore.login();
+  } else {
+    authStore.logout();
+  }
+}
+
+/*
+function authenticate() {
   console.log("calls authenticate");
   let userauth = localStorage.getItem("MABUserWantsAuth");
   if (!userauth) {
@@ -42,5 +51,5 @@ onMounted(() => {
     //Create a new OAuthInfo object.
     authStore.login();
   }
-});
+});*/
 </script>
