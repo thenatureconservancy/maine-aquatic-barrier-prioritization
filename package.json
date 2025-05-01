@@ -14,7 +14,7 @@
     "@arcgis/core": "^4.30.9",
     "@esri/calcite-components": "^3.1.0",
     "@quasar/extras": "^1.16.9",
-    "@quasar/vite-plugin": "^1.7.0",
+    "@quasar/vite-plugin": "^1.9.0",
     "html-to-pdfmake": "^2.5.9",
     "html2canvas": "^1.4.1",
     "pdfmake": "^0.2.10",
@@ -32,7 +32,7 @@
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
     "prettier": "^3.0.3",
-    "vite": "^5.4.19",
+    "vite": "^6.3.4",
     "vite-plugin-mkcert": "^1.17.8"
   }
 }
