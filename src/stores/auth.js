@@ -6,9 +6,10 @@ import PortalItem from "@arcgis/core/portal/PortalItem.js";
 import { ref, computed } from 'vue'
 
 export const useAuthStore = defineStore("auth", () => ({
-  buttonLabel: ref('sign in'),
-  userName: ref('[ Sign in to access secure data ]' ),
+  buttonLabel: ref('TNC sign in'),
+  userName: ref(''),
   userAllowed: false,
+  loading: false,
 
   async login() {
     console.log('login')
@@ -36,6 +37,7 @@ export const useAuthStore = defineStore("auth", () => ({
         alert("There was a problem connecting to the site.");
       }
   },
+  //id: '9de47e18a68743ff9beb0be82bc5c545', access
   checkPermissions(){
   let _this = this;
   const portal = new Portal({
@@ -45,7 +47,7 @@ export const useAuthStore = defineStore("auth", () => ({
     portal
   .load()
   .then(function (results) {
-    _this.userName = "[ Welcome, " + results.user.fullName + " ]"
+    let user = results.user.fullName
     const appItem = new PortalItem({
       id: '9de47e18a68743ff9beb0be82bc5c545',
       portal: portal
@@ -54,8 +56,9 @@ export const useAuthStore = defineStore("auth", () => ({
       .load()
       .then(function (results) {
         console.log(results)
-        this.userAllowed = true
+        _this.userAllowed = true
         //set up watch from map to load the secure items
+        _this.userName = "[ Welcome, " + user + " ]"
       })
       .catch((error) => {
         console.log(error)
@@ -66,7 +69,7 @@ export const useAuthStore = defineStore("auth", () => ({
   logout(){
     console.log('logout')
      // If already signed in, then destroy the credentials to sign out.
-     this.buttonLabel = 'Sign in'
+     this.buttonLabel = 'TNC sign in'
      IdentityManager.destroyCredentials();
      window.location.reload();
   }

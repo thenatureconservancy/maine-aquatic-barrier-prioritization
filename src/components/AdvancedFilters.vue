@@ -153,6 +153,35 @@ let fishPriorityStore = useFishPriorityStore()
                     :step="control.range.step"
                     @change="store.updateFilter(control)"
                   ></q-range>
+                  <div class="text-center">
+                   <q-btn size="xs" label="custom range" flat color="blue"><q-menu>
+                    <div class="q-pa-md" style="width: 200px">
+                      <q-input
+                        dense
+                        v-model.number="control.modRange.min"
+                        type="number"
+                        label="Min"
+                        class="q-mb-sm"
+                       
+                      ></q-input>
+                     
+                      <q-input
+                        dense
+                        v-model.number="control.modRange.max"
+                        type="number"
+                        label="Max"
+                        class="q-mb-sm"
+                        @update:model-value="
+                          control.model.max > control.range.max ||
+                          control.model.max < control.modRange.min
+                            ? (control.model.max = control.range.max)
+                            : (control.model.max = control.modRange.max),
+                          store.updateFilter(control)
+                        "
+                      ></q-input>
+                    </div>
+                   </q-menu></q-btn>
+                   </div>
                   <!--div>
                     <sparkline v-bind:data="control.histogram"></sparkline>
                   </div-->
@@ -179,6 +208,7 @@ let fishPriorityStore = useFishPriorityStore()
                   >
                 </div>
               </div>
+              
             </div>
           </q-item-section>
         </q-item>

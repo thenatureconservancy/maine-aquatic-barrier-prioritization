@@ -16,7 +16,7 @@ import { useFiltersStore } from "../stores/filters";
 const filtersStore = useFiltersStore();
 import { useExportStore } from "../stores/export";
 const exportStore = useExportStore();
-import { useAuthStore } from "../stores/auth"
+import { useAuthStore } from "../stores/auth";
 const authStore = useAuthStore();
 
 const label = ref(false);
@@ -94,7 +94,7 @@ function getCount() {
     //re-rerun nest function? not sure if i need this
     for (let i = 0; i < filtersStore.json.length; i++) {
       let fieldName = filtersStore.json[i].attributeField;
-      console.log(fieldName);
+
       if (filtersStore.json[i].variableType == "Continuous Range") {
         query.outStatistics.push({
           onStatisticField: fieldName,
@@ -128,7 +128,7 @@ function getCount() {
       let rangeFields = response.features[0].attributes;
       for (let i = 0; i < filtersStore.json.length; i++) {
         let fieldName = filtersStore.json[i].attributeField;
-         if (rangeFields.hasOwnProperty(fieldName + "min")) {
+        if (rangeFields.hasOwnProperty(fieldName + "min")) {
           if (!filtersStore.json[i].inUse) {
             filtersStore.json[i].modRange.min = rangeFields[fieldName + "min"];
             filtersStore.json[i].modRange.max = rangeFields[fieldName + "max"];
@@ -146,18 +146,20 @@ function getCount() {
     //update min and max on ranges
   });
 }
-function prepDataDownload() {
+function prepDataDownload_old() {
   let def = addGeogToDef();
   let fieldsList = exportStore.getFieldsList();
-  console.log(fieldsList);
   esri.mapView.whenLayerView(esri.layer).then((layerView) => {
     const query = layerView.layer.createQuery();
     query.where = def;
     query.outFields = fieldsList;
     query.returnGeometry = false;
+    query.maxRecordCountFactor = 5;
+    query.start = 0;
+    query.num = 12000;
     //query.groupByFieldsForStatistics = [fieldName[geog]]
     layerView.layer.queryFeatures(query).then(function (response) {
-      console.log(response);
+      console.log(response.features.length);
       let features = response.features;
       let obj = {};
 
@@ -166,6 +168,43 @@ function prepDataDownload() {
     });
   });
 }
+async function prepDataDownload() {
+  console.log("prepDataDownload");
+  esri.mapView.whenLayerView(esri.layer).then((layerView) => {
+    let query = layerView.layer.createQuery();
+    let start = 0;
+    let num = 10000;
+    let def = addGeogToDef();
+    let fieldsList = exportStore.getFieldsList();
+    let allFeatures = [];
+    let hasMoreRecords = true;
+    async function fetchRecords() {
+      while (hasMoreRecords) {
+        //const results = await featureLayer.queryFeatures(query);
+        query.where = def; // Your query condition
+        query.outFields = fieldsList; // Fields to return
+        query.returnGeometry = false; // Set to true if you need geometry
+        query.start = start; // Start from the first record
+        query.num = num; // Number of records per batch
+        query.maxRecordCountFactor = 5;
+        let results = await layerView.layer.queryFeatures(query);
+        allFeatures = allFeatures.concat(results.features);
+
+        // Check if the number of records returned is less than the num parameter
+        if (results.features.length < 2000) {
+          exportStore.data = allFeatures;
+          exportStore.jsonToCsv();
+          hasMoreRecords = false;
+        } else {
+          // Update start to fetch the next batch of records
+          start = start + num;
+        }
+      }
+    }
+    fetchRecords();
+  });
+}
+
 function changeGeography() {
   //clear
   //turn off all layers
@@ -1220,11 +1259,29 @@ function getHistogram(RfieldName) {
     getHistogramChart(data[0]);
   }
 }
-function loadSecureData(){
-  //esri.layer.url = "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/INTERNAL_AllPrioritized_Barriers/FeatureServer"
-  
+function loadSecureData() {
+  authStore.loading = true;
+  esri.layer.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/INTERNAL_AllPrioritized_Barriers/FeatureServer";
+  esri.layer.id = "securedata";
+  esri.USTrace.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/INTERNAL_US_TraceLines2025/FeatureServer/0";
+  esri.DSTrace.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/INTERNAL_DS_TraceLines2025/FeatureServer/0";
+  setTimeout(() => {
+    // Code to be executed after 5 seconds
+    console.log("Waited 5 seconds");
+    authStore.loading = false;
+  }, 5000);
 }
-
+function loadPublicData() {
+  esri.layer.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/AllPrioritized_Barriers2025/FeatureServer/0";
+  esri.USTrace.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/ArcGIS/rest/services/US_TraceLines2025/FeatureServer/0";
+  esri.DSTrace.url =
+    "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/DS_TraceLines2025/FeatureServer/0";
+}
 //uncomment and run this function from getHistogram if you need to get updated query data for the histogram.  the results print to the screen and can
 //be coppied into to the data object above. The data is currently hard coded.
 /*function getHistogramQuery2(){
@@ -1409,6 +1466,7 @@ watch(
 watch(
   () => exportStore.getDataDownload,
   () => {
+    console.log("export store");
     prepDataDownload();
   }
 );
@@ -1416,9 +1474,14 @@ watch(
 watch(
   () => authStore.userAllowed,
   () => {
-    loadSecureData()
+    console.log("gets triggered");
+    if (authStore.userAllowed) {
+      loadSecureData();
+    } else {
+      loadPublicData();
+    }
   }
-)
+);
 /**IMPORT ESRI LIBS */
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
@@ -1427,10 +1490,11 @@ import Legend from "@arcgis/core/widgets/Legend";
 import Measurement from "@arcgis/core/widgets/Measurement";
 import Expand from "@arcgis/core/widgets/Expand";
 import BasemapGallery from "@arcgis/core/widgets/BasemapGallery";
+import PortalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/PortalBasemapsSource";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 //import ScaleBar from "@arcgis/core/widgets/ScaleBar";
 import Portal from "@arcgis/core/portal/Portal";
-
+import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 import * as identify from "@arcgis/core/rest/identify.js";
 import IdentifyParameters from "@arcgis/core/rest/support/IdentifyParameters.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
@@ -1464,10 +1528,27 @@ onMounted(() => {
     esri.webmap = new WebMap({
       portalItem: {
         // autocasts as new PortalItem()
-        id: "e301a33e8667412abe497c329ad581d1",
+        id: "d0ce328143dc40f5b6af8b22c6440056",
       },
     });
   }
+  /*
+  esri.map = new Map({
+    basemap: {
+      portalItem: {
+        // autocasts as new PortalItem()
+        id: "d22aed9a4acb4bc8ae8f2141732af496", // Change to the desired basemap ID
+      },
+    },
+  });
+
+  esri.webmap.load().then(() => {
+    esri.webmap.layers.forEach((layer) => {
+      esri.webmap.layers.forEach((layer) => {
+        esri.map.add(layer); // No cloning needed
+      });
+    });
+  });*/
 
   //create the map view
   if (esri.mapView == "") {
@@ -1480,12 +1561,117 @@ onMounted(() => {
       },
     });
   }
+
+  // Create portal. Used for PortalBasemapSource below
+  const portal = new Portal();
+
+  // Titles of TNC Basemaps to include in Basemap Gallery Widget
+  const allowedBasemapTitles = [
+    "Imagery Hybrid",
+    "Ocean Basemap",
+    "TNC Light with Hillshade",
+    "TNC Dark Gray Map",
+    "TNC World Topographic Map",
+    "Streets",
+  ];
+
+  // Define Basemap Gallery Wideget source using ID from TNC Basemap
+  //  Gallery ArcGIS Online Group. By default, all maps from group will
+  //  be added to the Basemap Gallery Widget. The filterFunction only
+  //  brings in maps from the group whose titles match those in the
+  //  allowedBasemapTitles array above.
+  const source = new PortalBasemapsSource({
+    portal,
+    query: {
+      id: "defa1b2287604d069c70af515331e30f",
+    },
+    filterFunction: (basemap) =>
+      allowedBasemapTitles.indexOf(basemap.portalItem.title) > -1,
+  });
+  let view = esri.mapView;
+
+  const bgExpand = new Expand({
+    view,
+    content: new BasemapGallery({ source, view }),
+    expandIconClass: "esri-icon-basemap",
+  });
+
+  esri.mapView.ui.add(bgExpand, "bottom-right");
+  // close expand when basemap is changed
+
   let layerList = new LayerList({
     view: esri.mapView,
     container: "layerList",
     dragEnabled: true,
     visibilityAppearance: "checkbox",
+    listItemCreatedFunction: function (event) {
+      esri.webmap.reorder(esri.layer, esri.webmap.layers.length - 1);
+      esri.webmap.reorder( esri.huc8, esri.webmap.layers.length - 1);
+      esri.webmap.reorder( esri.huc10, esri.webmap.layers.length - 1);
+     
+      const item = event.item;
+
+      // Create a container for the slider
+      const sliderContainer = document.createElement("div");
+      sliderContainer.style.marginTop = "8px";
+
+      // Create the slider input
+      const slider = document.createElement("input");
+      slider.type = "range";
+      slider.min = 0;
+      slider.max = 1;
+      slider.step = 0.01;
+      slider.value = item.layer.opacity;
+
+      // Update layer opacity on slider change
+      slider.addEventListener("input", () => {
+        item.layer.opacity = parseFloat(slider.value);
+      });
+
+      sliderContainer.appendChild(slider);
+
+      // Create the toggle button with an opacity icon
+
+      // Create a wrapper to hold both button and slider
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = `<strong>Opacity:</strong><br/>`;
+      wrapper.style.marginLeft = "12px";
+      wrapper.appendChild(sliderContainer);
+
+      // Add the wrapper to the panel
+      item.panel = {
+        content: wrapper,
+        open: false,
+        icon: 'transparency',
+   
+      };
+    },
   });
+
+  /* listItemCreatedFunction: function (event) {
+      esri.webmap.reorder(esri.layer, esri.webmap.layers.length - 1);
+      const item = event.item;
+
+      // Create a slider input
+      const slider = document.createElement("input");
+      slider.innerText = "Opacity: ";
+      slider.type = "range";
+      slider.min = 0;
+      slider.max = 1;
+      slider.step = 0.01;
+      slider.value = item.layer.opacity;
+
+      // Update layer opacity on slider change
+      slider.addEventListener("input", () => {
+        item.layer.opacity = parseFloat(slider.value);
+      });
+
+      // Add the slider to the panel
+      item.panel = {
+        content: slider,
+        open: true,
+      };
+    },*/
 
   layerList.visibleElements = {
     catalogLayerList: false,
@@ -1507,14 +1693,17 @@ onMounted(() => {
     }
   })*/
 
-  // 
+  //
   esri.layer = new FeatureLayer({
     url: "https://services.arcgis.com/F7DSX1DSNSiWmOqh/arcgis/rest/services/AllPrioritized_Barriers2025/FeatureServer/0",
+    title: "all barriers",
   });
   esri.layer.outFields = ["*"];
   esri.layer.listMode = "hide";
+
+  // Add the layer
   esri.webmap.add(esri.layer);
-  esri.webmap.reorder(esri.layer, 100);
+
   esri.layer.renderer = {
     type: "unique-value", // autocasts as new UniqueValueRenderer()
     field: "Type",
@@ -1565,14 +1754,15 @@ onMounted(() => {
     symbol: {
       type: "text", // autocasts as new TextSymbol()
       color: "#28343a",
-
+      haloColor: "white", // Color of the halo
+      haloSize: 1, // Size of the halo in points
       //backgroundColor: [213, 184, 255, 0.75],
       //borderLineColor: 'green',
       //borderLineSize: 1,
       //yoffset: 5,
       font: {
         // autocast as new Font()
-        family: "Playfair Display",
+        family: "sans-serif",
         size: 10,
         weight: "bold",
       },
@@ -1583,12 +1773,28 @@ onMounted(() => {
     },
   };
   esri.layer.labelingInfo = [];
+  let usRenderer = new SimpleRenderer({
+    symbol: {
+      type: "simple-line",
+      color: "#90214A",
+      width: "2px",
+    },
+  });
+
+  let dsRenderer = new SimpleRenderer({
+    symbol: {
+      type: "simple-line",
+      color: "#F3901D",
+      width: "2px",
+    },
+  });
   esri.USTrace = new FeatureLayer({
     url: "https://services.arcgis.com/F7DSX1DSNSiWmOqh/ArcGIS/rest/services/US_TraceLines2025/FeatureServer/0",
     visible: false,
     definitionExpression: "1=1",
     legendEnabled: false,
     listMode: "hide",
+    renderer: usRenderer,
   });
   esri.webmap.add(esri.USTrace);
   esri.USTrace.effect = "bloom(1.5, 0.5px, 0.1)";
@@ -1598,6 +1804,7 @@ onMounted(() => {
     definitionExpression: "1=1",
     legendEnabled: false,
     listMode: "hide",
+    renderer: dsRenderer,
   });
   esri.webmap.add(esri.DSTrace);
   esri.DSTrace.effect = "bloom(1.5, 0.5px, 0.1)";
@@ -1632,7 +1839,7 @@ onMounted(() => {
     esri.mapView
       .hitTest(event, { include: [esri.layer] })
       .then(function (response) {
-        if (response.results.length > 0) {
+        if (response.results.length > 0 && navStore.tab !== "geography") {
           let zoomLong = response.results[0].graphic.geometry.longitude;
           let zoomLat = response.results[0].graphic.geometry.latitude;
           let location = new Point(zoomLong, zoomLat);
@@ -1670,7 +1877,7 @@ onMounted(() => {
         exactMatch: false,
         outFields: ["*"],
         name: "All Barriers",
-        placeholder: "Find Site by ID",
+        placeholder: "Find Site ID",
         maxResults: 6,
         maxSuggestions: 6,
         suggestionsEnabled: true,
@@ -1745,31 +1952,31 @@ onMounted(() => {
   //make call to query get all the stats
   getCount();
   //getHistogram('batTotUSDS')
-  esriHistogram("US_SalmHabUnits");
+  //esriHistogram("US_SalmHabUnits");
 });
 </script>
 
 <template>
   <div id="map" ref="map">
     <q-btn
-      style="position: absolute; top: 10px; right: 10px"
+      style="position: absolute; top: 10px; right: 10px; z-index: 999"
       color="white"
-      class="text-blue-grey-9"
       square=""
-      size="sm"
+      size="md"
       padding="10px"
       :icon="label ? 'check_circle' : 'radio_button_unchecked'"
-      label="Show Label"
+      label="Show site id"
       @click="showLabels()"
       :ripple="false"
+      text-color="primary"
     ></q-btn>
     <q-btn
       v-if="infoPopupStore.details.Site_ID"
-      style="position: absolute; top: 10px; right: 135px"
+      style="position: absolute; top: 10px; right: 155px"
       color="white"
       class="text-blue-grey-9"
       square=""
-      size="sm"
+      size="md"
       padding="10px"
       label="Clear Selected"
       @click="clearSelected()"
@@ -1846,7 +2053,7 @@ esri-expand__content esri-expand__content--expanded div {
 </style>
 <style>
 .esri-legend {
-  width: 160px !important;
+  width: 200px !important;
 }
 .esri-legend__service h3 {
   line-height: unset;

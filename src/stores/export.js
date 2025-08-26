@@ -51,9 +51,18 @@ export const useExportStore = defineStore('export', () => {
                 "name": "HUC12 Name",
                 "field": "HUC12_Name"
             },
+              {
+                "name": "HUC12 Code",
+                "field": "HUC12"
+            },
+               
             {
                 "name": "HUC10 Name",
                 "field": "HUC10_Name"
+            },
+               {
+                "name": "HUC10 Code",
+                "field": "HUC10"
             },
             {
                 "name": "HUC8 Name",
@@ -66,11 +75,63 @@ export const useExportStore = defineStore('export', () => {
             {
                 "name": "Passability Score (0-1)",
                 "field": "Passability"
-            }
+            },
+            {
+                "name": "Flood Risk Estimate",
+                "field": "FloodRisk"
+            },
+            
+            {
+                "name": "Latitude",
+                "field": "Lat"
+            },
+             {
+                "name": "Longitude",
+                "field": "Long"
+            },
+           
         ],
         "download": true,
-        "fieldsList": ['Site_ID','Date_,Stream','Town,Tributary_To','Type,Road_Class','Barrier_Class','Dam_Name','HUC12_Name','HUC10_Name','HUC8_Name','HUC6_Name', 'Passability']
+        "fieldsList": ['Site_ID','Date_','Stream','Town','Tributary_To','Type','Road_Class','Barrier_Class','Dam_Name','HUC12_Name','HUC12','HUC10_Name','HUC10','HUC8_Name','HUC6_Name', 'Passability','FloodRisk', 'Lat','Long'],
     },
+    {
+  "title": "Prioritization Results",
+  "children": [
+    { "name": "Atlantic Salmon- Statewide Tier", "field": "AtlanticSalmon_Statewide_Tier" },
+    { "name": "Atlantic Salmon- HUC8 Tier", "field": "AtlanticSalmon_HUC8_Tier" },
+    { "name": "Atlantic Salmon- HUC10 Tier", "field": "AtlanticSalmon_HUC10_Tier" },
+    { "name": "Inland Brook Trout- Statewide Tier", "field": "BrookTrout_Statewide_Tier" },
+    { "name": "Inland Brook Trout- HUC8 Tier", "field": "BrookTrout_HUC8_Tier" },
+    { "name": "Inland Brook Trout- HUC10 Tier", "field": "BrookTrout_HUC10_Tier" },
+    { "name": "Shad/Blueback Herring- Statewide Tier", "field": "ShadBBH_Statewide_Tier" },
+    { "name": "Shad/Blueback Herring- HUC8 Tier", "field": "ShadBBH_HUC8_Tier" },
+    { "name": "Shad/Blueback Herring- HUC10 Tier", "field": "ShadBBH_HUC10_Tier" },
+    { "name": "Coastal Anadromous- Statewide Tier", "field": "Coastal_Statewide_Tier" },
+    { "name": "Coastal Anadromous- HUC8 Tier", "field": "Coastal_HUC8_Tier" },
+    { "name": "Coastal Anadromous- HUC10 Tier", "field": "Coastal_HUC10_Tier" },
+    { "name": "Alewife- Statewide Tier", "field": "Alewife_Statewide_Tier" },
+    { "name": "Alewife- HUC8 Tier", "field": "Alewife_HUC8_Tier" },
+    { "name": "Alewife- HUC10 Tier", "field": "Alewife_HUC10_Tier" }
+  ],
+  "download": true,
+  "fieldsList": [
+    "AtlanticSalmon_Statewide_Tier",
+    "AtlanticSalmon_HUC8_Tier",
+    "AtlanticSalmon_HUC10_Tier",
+    "BrookTrout_Statewide_Tier",
+    "BrookTrout_HUC8_Tier",
+    "BrookTrout_HUC10_Tier",
+    "ShadBBH_Statewide_Tier",
+    "ShadBBH_HUC8_Tier",
+    "ShadBBH_HUC10_Tier",
+    "Coastal_Statewide_Tier",
+    "Coastal_HUC8_Tier",
+    "Coastal_HUC10_Tier",
+    "Alewife_Statewide_Tier",
+    "Alewife_HUC8_Tier",
+    "Alewife_HUC10_Tier"
+  ]
+},
     {
         "title": "Network",
         "children": [
@@ -87,7 +148,7 @@ export const useExportStore = defineStore('export', () => {
                 "field": "DSFishways"
             },
             {
-                "name": "Absolute Gain (m)",
+                "name": "Absolute Gain (meters)",
                 "field": "batAbs"
             },
             {
@@ -99,11 +160,11 @@ export const useExportStore = defineStore('export', () => {
                 "field": "TotDASqKM"
             },
             {
-                "name": "Total Func Net (Upstream + Downstream m)",
+                "name": "Total Func Net (Upstream + Downstream meters)",
                 "field": "batTotUSDS"
             },
             {
-                "name": "Upstream Functional Network Length (m)",
+                "name": "Upstream Functional Network Length (meters)",
                 "field": "batFuncUS"
             }
         ],
@@ -175,11 +236,11 @@ export const useExportStore = defineStore('export', () => {
          
             },
             {
-                "name": "Total BKT Hab Length",
+                "name": "Total BKT Hab Length (miles)",
                 "field": "MilesBT_HVH"
             },
             {
-                "name": "Upstream BKT Hab",
+                "name": "Upstream BKT Hab Length (miles)",
                 "field": "MilesBT_HVH_USonly"
             }
         ],
@@ -194,7 +255,7 @@ export const useExportStore = defineStore('export', () => {
                 "field": "cumulativeSalmHabUnits"
             },
             {
-                "name": "DMR Quality Salmon Habitat",
+                "name": "Salmon Habitat Quality",
                 "field": "onDMRSalmonPriority"
             },
             {
@@ -255,10 +316,28 @@ export const useExportStore = defineStore('export', () => {
     return fieldsList
   }
   function jsonToCsv(type) {
+    console.log('jsonToCsv')
   // Convert JSON to CSV format
     let jsonData = []
-    //get fieds from dataDownloadObject
-    
+  
+   
+    data._rawValue.forEach(item => {
+       const epochTime = item.attributes.Date_; // e.g., 1678886400000
+        console.log(item)
+       if (epochTime){
+        const dateObject = new Date(epochTime);
+        const easternTimeFormatted = dateObject.toLocaleString('en-US', {
+            timeZone: 'America/New_York',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+       });
+       item.attributes.Date_ = easternTimeFormatted;
+       }
+      console.log(item.attributes.Date_)
+        
+    });
+
     if (data._rawValue.length > 0) {
       let f = []
       let fileName = ''

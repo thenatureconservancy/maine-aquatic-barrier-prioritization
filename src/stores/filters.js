@@ -755,7 +755,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Network',
-      aliasName: 'Upstream Functional Network Length (m)',
+      aliasName: 'Upstream Functional Network Length (meters)',
       variableType: 'Continuous Range',
       filterType: 'Range slider  (two-ended)',
       attributeField: 'batFuncUS',
@@ -767,7 +767,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Network',
-      aliasName: 'Total Func Net (Upstream + Downstream m)',
+      aliasName: 'Total Func Net (Upstream + Downstream, meters)',
       variableType: 'Continuous Range',
       filterType: 'Range slider  (two-ended)',
       attributeField: 'batTotUSDS',
@@ -779,7 +779,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Network',
-      aliasName: 'Upstream Network Length',
+      aliasName: 'Upstream Network Length (meters)',
       variableType: 'Continuous Range',
       filterType: 'Range slider  (two-ended)',
       attributeField: 'batLenUS',
@@ -791,7 +791,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Landscape',
-      aliasName: 'Barrier on a tidal stream (HAT +1m)',
+      aliasName: 'Barrier on a tidal stream (HAT + 3.9ft)',
       variableType: 'Binary',
       filterType: 'Select one (yes/no)',
       attributeField: 'Tidal',
@@ -809,7 +809,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Landscape',
-      aliasName: 'Barrier on conservedland',
+      aliasName: 'Barrier on conserved land',
       variableType: 'Binary',
       filterType: 'Select one (yes/no)',
       attributeField: 'onConsLand',
@@ -872,7 +872,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Fish Habitat - Inland Brook Trout (BKT)',
-      aliasName: 'Heritage Fish Pond Barr',
+      aliasName: 'Heritage Fish Pond Barrier',
       variableType: 'Binary',
       filterType: 'Select one (yes/no)',
       attributeField: 'HeritagePondBarrier',
@@ -881,7 +881,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Fish Habitat - Inland Brook Trout (BKT)',
-      aliasName: 'Upstream BKT Hab',
+      aliasName: 'Upstream BKT Hab (miles)',
       variableType: 'Continuous Range',
       filterType: 'Range slider  (two-ended)',
       attributeField: 'MilesBT_HVH_USonly',
@@ -893,13 +893,13 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Fish Habitat - Inland Brook Trout (BKT)',
-      aliasName: 'Total BKT Hab Length',
+      aliasName: 'Total BKT Hab Length (miles)',
       variableType: 'Continuous Range',
       filterType: 'Range slider  (two-ended)',
       attributeField: 'MilesBT_HVH',
-      model: { min: 0, max: 376 },
-      range: { min: 0, max: 376, step: 10 },
-      modRange: { min: 0, max: 376, step: 10 },
+      model: { min: 0, max: 1150 },
+      range: { min: 0, max: 1150, step: 10 },
+      modRange: { min: 0, max: 1150, step: 10 },
       inUse: false,
       
     },
@@ -924,7 +924,7 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'Fish Habitat - Atlantic Salmon',
-      aliasName: 'DMR Priority Stream',
+      aliasName: 'Salmon Habitat Quality',
       variableType: 'Categorical',
       filterType: 'Select multiple',
       options_bare: [4, 3, 2, 1, 0],

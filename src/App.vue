@@ -3,16 +3,22 @@ import { useQuasar } from 'quasar'
 import { computed, render, watch, ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useFishPriorityStore } from './stores/fishPriority'
+import { usePanelNavigationStore } from './stores/panelNavigation'
 import { useExportStore } from "./stores/export";
 import SignInButton from './components/SignInButton.vue';   
 import {useAuthStore } from './stores/auth';
+import Help from './views/Help.vue';
 
+const navStore = usePanelNavigationStore();
 const authStore = useAuthStore();
 const fpStore = useFishPriorityStore();
 const exportStore = useExportStore();
+const panelStore = usePanelNavigationStore()
 const route = useRoute()
 const showDialog = ref(false)
 
+const width = ref(window.innerWidth/2.2)
+const height = ref(window.innerHeight )
 </script>
 <template>
   <q-layout view="hHh lpR fFf">
@@ -115,6 +121,7 @@ const showDialog = ref(false)
    color="primary"
    padding=""
    class="q-mx-xs"
+   @click="panelStore.rightDrawerOpen = true"
    >help</q-btn>
 
    <q-btn
@@ -168,7 +175,8 @@ const showDialog = ref(false)
    </div>
  </q-menu>
  </q-btn>
- <p :class="authStore.userName.includes('Contact')? 'text-caption q-mb-none q-pb-none text-red' : 'text-caption q-mb-none q-pb-none'" >{{ authStore.userName }}</p>
+ <p v-if="authStore.userName" :class="authStore.userName.includes('Contact')? 'text-caption q-mb-none q-pb-none text-red' : 'text-caption q-mb-none q-pb-none'" >
+  {{ authStore.userName }} &nbsp; <q-spinner-hourglass v-if="authStore.loading" class="q-mb-xs" size="14px" color="primary"></q-spinner-hourglass ></p>
  </div>
   <!--q-tabs
           indicator-color="primary"
@@ -264,7 +272,17 @@ const showDialog = ref(false)
         </q-card>
       </q-dialog>
     </q-page-container>
+        <q-drawer class="shadow-5 no-scroll full-height" overlay v-model="panelStore.rightDrawerOpen" side="right" :width="width" :height="height" bordered>
+     
+      <q-toolbar class="bg-primary text-white">
+        <q-toolbar-title class="text-white">Help</q-toolbar-title>
+        <q-btn flat icon="close" @click="panelStore.rightDrawerOpen = false;navStore.helpSection = ''" />
+        </q-toolbar>
+         <Help></Help>
+
+    </q-drawer>
   </q-layout>
+
 </template>
 
 <style>

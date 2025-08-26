@@ -1,5 +1,8 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useAuthStore } from './auth'
+
+
 
 export const useInfoPopupStore = defineStore('InfoPopup', () => {
   const data = ref([
@@ -13,18 +16,36 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
     { category: 'About the Crossing', alias: 'Barrier Class', field: 'Barrier_Class' },
     { category: 'About the Crossing', alias: 'Dam Name (if applicable)', field: 'Dam_Name' },
     { category: 'About the Crossing', alias: 'HUC12 Name', field: 'HUC12_Name' },
+    { category: 'About the Crossing', alias: 'HUC12 Code', field: 'HUC12' },
     { category: 'About the Crossing', alias: 'HUC10 Name', field: 'HUC10_Name' },
+    { category: 'About the Crossing', alias: 'HUC10 Code', field: 'HUC10' },
     { category: 'About the Crossing', alias: 'HUC8 Name', field: 'HUC8_Name' },
     { category: 'About the Crossing', alias: 'HUC6 Name', field: 'HUC6_Name' },
     { category: 'About the Crossing', alias: 'Passability Score (0-1)', field: 'Passability' },
+    { category: 'About the Crossing', alias: 'Flood Risk Estimate', field: 'FloodRisk' },
+    { category: 'Prioritization Results', alias: 'Atlantic Salmon- Statewide Tier', field: 'AtlanticSalmon_Statewide_Tier'},
+    { category: 'Prioritization Results', alias: 'Atlantic Salmon- HUC8 Tier', field: 'AtlanticSalmon_HUC8_Tier' },
+    { category: 'Prioritization Results', alias: 'Atlantic Salmon- HUC10 Tier', field: 'AtlanticSalmon_HUC10_Tier' },
+    { category: 'Prioritization Results', alias: 'Inland Brook Trout- Statewide Tier', field: 'BrookTrout_Statewide_Tier' },
+    { category: 'Prioritization Results', alias: 'Inland Brook Trout- HUC8 Tier', field: 'BrookTrout_HUC8_Tier' },
+    { category: 'Prioritization Results', alias: 'Inland Brook Trout- HUC10 Tier', field: 'BrookTrout_HUC10_Tier' },
+    { category: 'Prioritization Results', alias: 'Shad/Blueback Herring- Statewide Tier', field: 'ShadBBH_Statewide_Tier' },
+    { category: 'Prioritization Results', alias: 'Shad/Blueback Herring- HUC8 Tier', field: 'ShadBBH_HUC8_Tier' },
+    { category: 'Prioritization Results', alias: 'Shad/Blueback Herring- HUC10 Tier', field: 'ShadBBH_HUC10_Tier' },
+    { category: 'Prioritization Results', alias: 'Coastal Anadromous- Statewide Tier', field: 'Coastal_Statewide_Tier' },
+    { category: 'Prioritization Results', alias: 'Coastal Anadromous- HUC8 Tier', field: 'Coastal_HUC8_Tier' },
+    { category: 'Prioritization Results', alias: 'Coastal Anadromous- HUC10 Tier', field: 'Coastal_HUC10_Tier' },
+    { category: 'Prioritization Results', alias: 'Alewife- Statewide Tier', field: 'Alewife_Statewide_Tier' },
+    { category: 'Prioritization Results', alias: 'Alewife- HUC8 Tier', field: 'Alewife_HUC8_Tier' },
+    { category: 'Prioritization Results', alias: 'Alewife- HUC10 Tier', field: 'Alewife_HUC10_Tier' },
     { category: 'Network', alias: '# Downstream Barriers', field: 'batCountDS' },
     { category: 'Network', alias: '# Downstream Hydropower', field: 'DSHydro' },
     { category: 'Network', alias: '# Downstream Passage Facilities', field: 'DSFishways' },
-    { category: 'Network', alias: 'Absolute Gain (m)', field: 'batAbs' },
+    { category: 'Network', alias: 'Absolute Gain (meters)', field: 'batAbs' },
     { category: 'Network', alias: 'Downstream Passability Product (0-1)', field: 'dsPassabilityProduct' },
     { category: 'Network', alias: 'Total Drainage Area (sq km)', field: 'TotDASqKM' },
-    { category: 'Network', alias: 'Total Func Net (Upstream + Downstream m)', field: 'batTotUSDS' },
-    { category: 'Network', alias: 'Upstream Functional Network Length (m)', field: 'batFuncUS' },
+    { category: 'Network', alias: 'Total Func Net (Upstream + Downstream, meters)', field: 'batTotUSDS' },
+    { category: 'Network', alias: 'Upstream Functional Network Length (meters)', field: 'batFuncUS' },
     {
       category: 'Landscape',
       alias: '% Forest in Total Network 100m buff',
@@ -69,12 +90,12 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
     },
     {
       category: 'Fish Habitat - Inland Brook Trout (BKT)',
-      alias: 'Total BKT Hab Length',
+      alias: 'Total BKT Hab Length (miles)',
       field: 'MilesBT_HVH'
     },
     {
       category: 'Fish Habitat - Inland Brook Trout (BKT)',
-      alias: 'Upstream BKT Hab',
+      alias: 'Upstream BKT Hab (miles)',
       field: 'MilesBT_HVH_USonly'
     },
     {
@@ -84,7 +105,7 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
     },
     {
       category: 'Fish Habitat - Atlantic Salmon',
-      alias: 'DMR Quality Salmon Habitat',
+      alias: 'Salmon Habitat Quality',
       field: 'onDMRSalmonPriority',
       maskHighLow: 'Y'
     },
@@ -110,8 +131,17 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
   const slide = ref(0)
 
   const photoList = computed(() => {
-    let list = photos[details.value.Site_ID]
-
+   
+    const authStore = useAuthStore()
+    let list = ''
+    if (authStore.userAllowed){
+     list = internalPhotos[details.value.Site_ID]
+    }
+        
+    else{
+     list = photos[details.value.Site_ID]
+    }
+    
     if (list) {
       return list
     } else {

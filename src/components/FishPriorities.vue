@@ -1,11 +1,26 @@
 <script setup>
-import { ref } from 'vue'
-import { useFishPriorityStore } from '../stores/fishPriority'
-let store = useFishPriorityStore()
+import { ref } from "vue";
+import { useFishPriorityStore } from "../stores/fishPriority";
+let store = useFishPriorityStore();
+import { usePanelNavigationStore } from "../stores/panelNavigation";
+const navStore = usePanelNavigationStore();
 
 function updateSlider(key, selected, slider) {
-  slider.includes(key) ? slider.splice(selected, 1) : slider.push(key)
-  store.getDef()
+  slider.includes(key) ? slider.splice(selected, 1) : slider.push(key);
+  store.getDef();
+}
+function expandHelp(slider) {
+  navStore.rightDrawerOpen = true;
+  navStore.helpTab = "scenarios";
+  navStore[slider.expand] = true;
+  const element = document.getElementById(slider.expand);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth", // or 'auto'
+        block: "nearest", // 'start', 'center', 'end', or 'nearest'
+        inline: "nearest", // for horizontal alignment
+      });
+    }
 }
 </script>
 
@@ -15,7 +30,9 @@ function updateSlider(key, selected, slider) {
       >View Training Video</q-btn
   -->
     <div class="q-pa-sm shadow-2">
-      <p class="text-body1 q-mb-none bg-blue-grey-6 q-pa-xs q-pl-md text-white q-mt-none">
+      <p
+        class="text-body1 q-mb-none bg-blue-grey-6 q-pa-xs q-pl-md text-white q-mt-none"
+      >
         Choose species by which to symbolize:
       </p>
       <q-select
@@ -26,42 +43,48 @@ function updateSlider(key, selected, slider) {
         :emit-value="false"
         v-model="store.symbolizeByField"
         :options="[
-          { label: 'None', val: 'none', statewide: 'None', huc8: 'None', huc10: 'None' },
+          {
+            label: 'None',
+            val: 'none',
+            statewide: 'None',
+            huc8: 'None',
+            huc10: 'None',
+          },
           {
             label: 'Atlantic Salmon',
             val: 'salmon',
             statewide: 'AtlanticSalmon_Statewide_Tier',
             huc8: 'AtlanticSalmon_HUC8_Tier',
-            huc10: 'AtlanticSalmon_HUC10_Tier'
+            huc10: 'AtlanticSalmon_HUC10_Tier',
           },
           {
             label: 'Inland Brook Trout',
             val: 'trout',
             statewide: 'BrookTrout_Statewide_Tier',
             huc8: 'BrookTrout_HUC8_Tier',
-            huc10: 'BrookTrout_HUC10_Tier'
+            huc10: 'BrookTrout_HUC10_Tier',
           },
           {
             label: 'Shad/Blueback Herring',
             val: 'shad',
             statewide: 'ShadBBH_Statewide_Tier',
             huc8: 'ShadBBH_HUC8_Tier',
-            huc10: 'ShadBBH_HUC10_Tier'
+            huc10: 'ShadBBH_HUC10_Tier',
           },
           {
             label: 'Coastal Anadromous',
             val: 'ana',
             statewide: 'Coastal_Statewide_Tier',
             huc8: 'Coastal_HUC8_Tier',
-            huc10: 'Coastal_HUC10_Tier'
+            huc10: 'Coastal_HUC10_Tier',
           },
           {
             label: 'Alewife',
             val: 'alewife',
             statewide: 'Alewife_Statewide_Tier',
             huc8: 'Alewife_HUC8_Tier',
-            huc10: 'Alewife_HUC10_Tier'
-          }
+            huc10: 'Alewife_HUC10_Tier',
+          },
         ]"
       ></q-select>
     </div>
@@ -92,14 +115,22 @@ function updateSlider(key, selected, slider) {
         <p class="text-primary text-bold q-mr-sm">Results- {{ store.count }}</p>
       </q-toolbar>
 
-      <div class="" v-for="(slider, index) in store.speciesSliders" :key="index">
+      <div
+        class=""
+        v-for="(slider, index) in store.speciesSliders"
+        :key="index"
+      >
         <!--div class="col-1 self-center">
       <q-radio :val="index" size="sm" class="bg-white q-ml-sm" v-model="store.selected"></q-radio>
     </div-->
         <div class="">
           <div
             class="q-mx-md q-pa-sm bg-white"
-            :style="slider.selected.length == 0 ? 'border: none' : 'border:  2px solid #143153'"
+            :style="
+              slider.selected.length == 0
+                ? 'border: none'
+                : 'border:  2px solid #143153'
+            "
           >
             <p class="text-body1 q-mb-xs">
               <!--q-checkbox
@@ -111,15 +142,31 @@ function updateSlider(key, selected, slider) {
                 "
               ></q-checkbox-->
               {{ slider.title }}
-              <q-btn color="primary" padding="sm" size="sm" flat round icon="help"></q-btn>
               <q-btn
-                :color="store.symbolizeByField.label == slider.title ? 'primary' : 'grey-5'"
+                color="primary"
+                padding="sm"
+                size="sm"
+                flat
+                round
+                icon="help"
+                @click="expandHelp(slider)"
+              ></q-btn>
+              <q-btn
+                :color="
+                  store.symbolizeByField.label == slider.title
+                    ? 'primary'
+                    : 'grey-5'
+                "
                 padding="sm"
                 size="sm"
                 flat
                 round
                 icon="location_on"
-                @click="store.symbolizeByField = store.findSymbolizeByOption(slider.title)"
+                @click="
+                  store.symbolizeByField = store.findSymbolizeByOption(
+                    slider.title
+                  )
+                "
               >
                 <q-tooltip> Symbolize by </q-tooltip>
               </q-btn>
@@ -127,7 +174,9 @@ function updateSlider(key, selected, slider) {
 
             <q-btn
               v-for="(val, key) in store.options"
-              @click="updateSlider(key, slider.selected.indexOf(key), slider.selected)"
+              @click="
+                updateSlider(key, slider.selected.indexOf(key), slider.selected)
+              "
               padding="sm"
               square
               :key="key"

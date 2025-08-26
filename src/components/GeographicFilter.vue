@@ -1,24 +1,37 @@
 <script setup>
-import { ref, computed } from 'vue'
-import { useGeographyStore } from '../stores/geography'
-let store = useGeographyStore()
-import { usePanelNavigationStore } from '../stores/panelNavigation'
-const navStore = usePanelNavigationStore()
+import { ref, computed } from "vue";
+import { useGeographyStore } from "../stores/geography";
+let store = useGeographyStore();
+import { usePanelNavigationStore } from "../stores/panelNavigation";
+const navStore = usePanelNavigationStore();
 
-const huc8options = ref(store.huc8_options)
-const huc10options = ref(store.huc10_options)
+const huc8options = ref(store.huc8_options);
+const huc10options = ref(store.huc10_options);
+
 
 function filterFn(val, update, abort) {
-  let options = store.tab == 'huc8' ? huc8options : huc10options
-  console.log(options)
+  console.log("filtering", val);
+  let options = store.tab == "huc8" ? huc8options : huc10options;
+  if (val === '') {
+        update(() => {
+          options.value = store.tab == "huc8" ? store.huc8_options_all : store.huc10_options_all;
+        });
+        return;
+      }
+
   update(() => {
-    const needle = val.toLocaleLowerCase()
-    options.value = options.value.filter((v) => v.label.toLocaleLowerCase().indexOf(needle) > -1)
-  })
+    const needle = val.toLocaleLowerCase();
+    options.value = options.value.filter(
+      (v) => v.label.toLocaleLowerCase().indexOf(needle) > -1
+    );
+    options.value = options.value.sort((a, b) =>
+      a.label.localeCompare(b.label)
+    );
+  });
 }
 
 function setModel(val) {
-  store.searchTerm = val
+  store.searchTerm = val;
 }
 </script>
 <template>
@@ -38,7 +51,6 @@ function setModel(val) {
     </q-tabs>
     <q-select
       v-if="store.tab !== 'statewide'"
-      @clear="store.searchTerm = ''"
       outlined
       :model-value="store.searchTerm"
       use-input
@@ -53,6 +65,7 @@ function setModel(val) {
       :label="store.loadValues.label"
       options-dense
       clearable
+      @clear="store.searchTerm = ''"
     >
       <template v-slot:no-option>
         <q-item>

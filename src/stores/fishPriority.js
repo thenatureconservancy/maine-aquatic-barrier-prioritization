@@ -31,7 +31,8 @@ export const useFishPriorityStore = defineStore('fishPriority', () => {
       },
       symbolize: false,
       selected: [],
-      active: false
+      active: false,
+      expand: 'salmonExpanded',
     },
     {
       title: 'Inland Brook Trout',
@@ -58,7 +59,8 @@ export const useFishPriorityStore = defineStore('fishPriority', () => {
       },
       symbolize: false,
       selected: [],
-      active: false
+      active: false,
+      expand: 'inlandExpanded',
     },
     {
       title: 'Shad/Blueback Herring',
@@ -85,7 +87,8 @@ export const useFishPriorityStore = defineStore('fishPriority', () => {
       },
       symbolize: false,
       selected: [],
-      active: false
+      active: false,
+      expand: 'shadExpanded',
     },
     {
       title: 'Coastal Anadromous',
@@ -112,7 +115,8 @@ export const useFishPriorityStore = defineStore('fishPriority', () => {
       },
       symbolize: false,
       selected: [],
-      active: false
+      active: false,
+      expand: 'coastalExpanded',
     },
     {
       title: 'Alewife',
@@ -139,7 +143,8 @@ export const useFishPriorityStore = defineStore('fishPriority', () => {
       },
       symbolize: false,
       selected: [],
-      active: false
+      active: false,
+      expand: 'alewifeExpanded',
     }
   ])
   const otherSliders = ref([
