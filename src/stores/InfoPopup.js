@@ -106,7 +106,7 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
     {
       category: 'Fish Habitat - Atlantic Salmon',
       alias: 'Salmon Habitat Quality',
-      field: 'onDMRSalmonPriority',
+      field: 'SalmonHabQual',
       maskHighLow: 'Y'
     },
     {

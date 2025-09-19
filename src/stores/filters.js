@@ -930,7 +930,7 @@ export const useFiltersStore = defineStore('filters', () => {
       options_bare: [4, 3, 2, 1, 0],
       options: [{label: '4 = Very High',val:4},{label:'3 = High', val: 3},{label:'2 = Medium', val:2},{label:'1 = Low', val:1},{label: '0 = No', val: 0}],
       useMask: true,
-      attributeField: 'onDMRSalmonPriority',
+      attributeField: 'SalmonHabQual',
       model: [],
       inUse: false
     },

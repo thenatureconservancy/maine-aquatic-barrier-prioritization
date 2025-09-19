@@ -271,7 +271,7 @@ function updateRenderer(field) {
       },
     };
   } else {
-    esri.layer.title = fishPriorityStore.symbolizeByField.label;
+    esri.layer.title = fishPriorityStore.symbolizeByField.label + ", tier"
     esri.layer.renderer = {
       type: "unique-value", // autocasts as new UniqueValueRenderer()
       field: "Type",

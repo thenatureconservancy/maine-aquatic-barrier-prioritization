@@ -256,7 +256,7 @@ export const useExportStore = defineStore('export', () => {
             },
             {
                 "name": "Salmon Habitat Quality",
-                "field": "onDMRSalmonPriority"
+                "field": "SalmonHabQual"
             },
             {
                 "name": "Salmon Critical Habitat HUC10",
@@ -265,7 +265,7 @@ export const useExportStore = defineStore('export', () => {
             }
         ],
         "download": true,
-        "fieldsList": ['cumulativeSalmHabUnits','onDMRSalmonPriority','HUC10_CritSalmHab']
+        "fieldsList": ['cumulativeSalmHabUnits','SalmonHabQual','HUC10_CritSalmHab']
     },
     {
         "title": "Fish Habitat - Smelt",
@@ -332,7 +332,7 @@ export const useExportStore = defineStore('export', () => {
             month: 'long',
             day: 'numeric',
        });
-       item.attributes.Date_ = easternTimeFormatted;
+       item.attributes.Date_ = '"' + easternTimeFormatted + '"'
        }
       console.log(item.attributes.Date_)
         

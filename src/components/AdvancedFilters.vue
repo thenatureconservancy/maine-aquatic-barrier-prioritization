@@ -158,25 +158,22 @@ let fishPriorityStore = useFishPriorityStore()
                     <div class="q-pa-md" style="width: 200px">
                       <q-input
                         dense
-                        v-model.number="control.modRange.min"
+                        v-model.number="control.model.min"
                         type="number"
                         label="Min"
                         class="q-mb-sm"
+                        @update:model-value="store.updateFilter(control)"
                        
                       ></q-input>
                      
                       <q-input
                         dense
-                        v-model.number="control.modRange.max"
+                        v-model.number="control.model.max"
                         type="number"
                         label="Max"
                         class="q-mb-sm"
                         @update:model-value="
-                          control.model.max > control.range.max ||
-                          control.model.max < control.modRange.min
-                            ? (control.model.max = control.range.max)
-                            : (control.model.max = control.modRange.max),
-                          store.updateFilter(control)
+                         store.updateFilter(control)
                         "
                       ></q-input>
                     </div>
