@@ -11,7 +11,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@arcgis/core": "^4.30.9",
+    "@arcgis/core": "4.29.4",
     "@esri/calcite-components": "^3.1.0",
     "@quasar/extras": "^1.16.9",
     "@quasar/vite-plugin": "^1.9.0",
