@@ -1,16 +1,26 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useInfoPopupStore } from '../stores/InfoPopup'
-import PhotoCarosel from './PhotoCarosel.vue'
-const infoPopupStore = useInfoPopupStore()
+import { ref, computed, watch } from "vue";
+import { useInfoPopupStore } from "../stores/InfoPopup";
+import { usePanelNavigationStore } from "../stores/panelNavigation";
+import PhotoCarosel from "./PhotoCarosel.vue";
+const infoPopupStore = useInfoPopupStore();
+const navStore = usePanelNavigationStore();
 
-let url = 'https://s3.us-west-1.amazonaws.com/maps.tnc.org/maine/SharedResources/CulvertPhotos/'
+let url =
+  "https://s3.us-west-1.amazonaws.com/maps.tnc.org/maine/SharedResources/CulvertPhotos/";
+
+function goToHelp() {
+  navStore.rightDrawerOpen = true;
+  navStore.helpTab = "report";
+}
 </script>
 
 <template>
   <div class="">
     <div v-if="!infoPopupStore.details.Site_ID" class="customDiv">
-      <p class="center text-grey-8">Select a barrier from the map to view details</p>
+      <p class="center text-grey-8">
+        Select a barrier from the map to view details
+      </p>
     </div>
 
     <div v-if="infoPopupStore.details.Site_ID !== ''">
@@ -79,7 +89,11 @@ let url = 'https://s3.us-west-1.amazonaws.com/maps.tnc.org/maine/SharedResources
       </div>
     </div>
     <!-- details -->
-    <q-list class="q-mb-md" v-if="infoPopupStore.details.Site_ID !== ''" bordered>
+    <q-list
+      class="q-mb-md"
+      v-if="infoPopupStore.details.Site_ID !== ''"
+      bordered
+    >
       <q-expansion-item
         v-for="(item, key) in infoPopupStore.infoList"
         expand-separator
@@ -92,8 +106,38 @@ let url = 'https://s3.us-west-1.amazonaws.com/maps.tnc.org/maine/SharedResources
       >
         <q-list class="bg-white">
           <q-item v-for="(att, key) in item.children" :key="key">
-            <q-item-section class="q-pr-lg">{{ att.name }}</q-item-section>
-            <q-item-section class="q-pr-lg q-pl-sm bg-accent">{{ att.value }}</q-item-section>
+            <q-item-section class="q-pr-lg"
+              ><span v-if="!att.helpText">{{ att.name }}</span>
+              <span v-if="att.helpText">
+                {{ att.name }}
+                <q-btn
+                  color="primary"
+                  padding="xs"
+                  size="xs"
+                  flat
+                  round
+                  icon="info"
+                  outline
+                ></q-btn
+                ><q-menu style="width: 350px">
+                  <div class="q-ma-md">
+                    <span>
+                      {{ att.helpText }}
+                      <q-btn
+                        v-if="att.helpButton == true"
+                        flat
+                        label="Comprehensive Report"
+                        color="blue-9"
+                        size="sm"
+                        @click="goToHelp()"
+                      ></q-btn
+                    ></span>
+                  </div> </q-menu
+              ></span>
+            </q-item-section>
+            <q-item-section class="q-pr-lg q-pl-sm bg-accent">{{
+              att.value
+            }}</q-item-section>
           </q-item>
         </q-list>
       </q-expansion-item>

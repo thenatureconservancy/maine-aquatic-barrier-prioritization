@@ -170,16 +170,7 @@ function goToHelp(section) {
 
       <q-separator></q-separator>
       <p class="q-ma-md">
-        Start by selecting a specific geography (either at the Statewide, HUC 8
-        or HUC10 watershed scale) within which you want to prioritize the
-        physical barriers to fish passage. A user can select the watershed from
-        the dropdown menu, or by selecting the watershed boundary directly on
-        the map. Then, tab through the options in the top bar to select and view
-        prioritizations within that geography for different fish species, to
-        filter results by additional metrics, and finally to see the
-        site-specific data for an individual barrier. The user can view
-        additional political and ecological layers concurrently with the results
-        in the ‘Layers’ tab.
+       Start by selecting a specific geography (either at the Statewide, HUC 8 or HUC10 watershed scale) within which you want to prioritize the physical barriers to fish passage. A user can select the watershed from the dropdown menu, or by selecting the watershed boundary directly on the map. Then, tab through the options in the top bar to select and view prioritizations within that geography for different fish species, to filter results by additional metrics, and finally to see the site-specific data for an individual barrier. The user can view additional political and ecological layers concurrently with the results in the ‘Layers’ tab.
       </p>
 
       <GeographicFilter></GeographicFilter>
@@ -289,7 +280,8 @@ function goToHelp(section) {
         <p class="text-h6 text-dark q-mb-none text-weight-light">
           Reference Layers
         </p>
-
+        
+        
         <q-space></q-space>
         <q-btn
           class=""
@@ -351,7 +343,9 @@ function goToHelp(section) {
           Show/Hide filters
         </q-tooltip></q-btn
       -->
-
+        <p class="q-ma-md">
+The user can click layers on and off by checking the boxes near the layer title; can change the order of the layers on the map by clicking on the six dots to the left of the layer and dragging into the desired position; can change the opacity of each layer by clicking on the intersecting squares to the right of the layer name. 
+</p>
       <div
         class="q-pa-md"
         id="layerList"

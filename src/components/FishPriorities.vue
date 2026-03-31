@@ -14,13 +14,13 @@ function expandHelp(slider) {
   navStore.helpTab = "scenarios";
   navStore[slider.expand] = true;
   const element = document.getElementById(slider.expand);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth", // or 'auto'
-        block: "nearest", // 'start', 'center', 'end', or 'nearest'
-        inline: "nearest", // for horizontal alignment
-      });
-    }
+  if (element) {
+    element.scrollIntoView({
+      behavior: "smooth", // or 'auto'
+      block: "nearest", // 'start', 'center', 'end', or 'nearest'
+      inline: "nearest", // for horizontal alignment
+    });
+  }
 }
 </script>
 
@@ -94,10 +94,11 @@ function expandHelp(slider) {
       </p>
 
       <p class="q-ma-sm">
-        Tier 1: Top 10% (of the results) <br />
-        Tier 2: 10-25% <br />
-        Tier 3: 25-50% <br />Tier 4: 50-75% <br />
-        Tier 5: 75-100%
+        Tier 1: the top 10% of the results, the highest priority <br />
+        Tier 2: the next 10-25% of the results <br />
+        Tier 3: the next 25-50% of the results <br />
+        Tier 4: the next 50-75% of the results <br />
+        Tier 5: the final 75-100% of the results
       </p>
 
       <q-toolbar class="q-mb-none">
@@ -164,7 +165,7 @@ function expandHelp(slider) {
                 icon="location_on"
                 @click="
                   store.symbolizeByField = store.findSymbolizeByOption(
-                    slider.title
+                    slider.title,
                   )
                 "
               >

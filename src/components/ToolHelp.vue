@@ -48,18 +48,22 @@ onMounted(() => {
         each fish species and can select multiple at the same time. Results
         displayed will indicate those barriers that are ranked in each of the
         species’ tiers selected. (For example, selecting Tier 1 and 2 for
-        Alewife and Tier 1 and 2 for American shad/Blueback herring (ASBH) will
-        only display crossings that are both Tier 1 or 2 for alewife and Tier 1
-        or 2 for SBBH). The species chosen for symbolization will show how the
-        crossings in those tiers rank for that species. (In the example above,
-        if ASBH is chosen for symbolization, the color coding will indicate the
-        rank for ASBH, despite how the crossing ranks for alewife.) The user can
-        choose the symbolization species with the dropdown at the top of the
-        panel, or by hitting the symbolization icon next to the individual
-        species. At any point, the user can also use the dropdown menu to select
-        ‘none’ for symbolization, and the points selected will be gray. To
-        remove or reset tier filters, the user can press on each tier button
-        individually, or use the ‘Clear All Tiers’ button.
+        Alewife <b><i>and</i></b> Tier 1 and 2 for American shad/Blueback
+        herring (ASBH) will only display crossings that are both Tier 1 or 2 for
+        alewife and Tier 1 or 2 for ASBH). This means that as the user adds
+        tiers of different scenarios, the criteria for being visible get more
+        restrictive; they are not additive. Crossings have to satisfy all the
+        tiers the user has selected, not just be in one of them. <br /><br />
+        The species chosen for symbolization will show how the crossings in
+        those tiers rank for that species. (In the example above, if ASBH is
+        chosen for symbolization, the color coding will indicate the rank for
+        ASBH, despite how the crossing ranks for alewife.) The user can choose
+        the symbolization species with the dropdown at the top of the panel, or
+        by hitting the symbolization icon next to the individual species. At any
+        point, the user can also use the dropdown menu to select ‘none’ for
+        symbolization, and the points selected will be gray. To remove or reset
+        tier filters, the user can press on each tier button individually, or
+        use the ‘Clear All Tiers’ button.
       </p>
     </div>
     <div id="filtersTab">
@@ -71,27 +75,30 @@ onMounted(() => {
         crossings.
       </p>
       <p>
-        <span class="text-red"> Caution!</span> Some of these metrics available
-        for filtering are also used in the different fish prioritization
-        scenarios – view which ones are used by clicking in the question mark by
-        each scenario in the ‘Fish Priority’ tab. Be aware that choosing to
-        additionally filter by any of those same metrics will add weight to that
-        metric that was not specified when the working group determined the
-        relative importance of each metric to the others in the prioritization.
+        <span class="text-red"> Caution!</span> It is important to
+        acknowledge that filtering does not change the result of prioritization,
+        it refines the set of crossings that the user sees. Some of these
+        metrics available for filtering are also used in the different fish
+        prioritization scenarios – view which ones are used by clicking in the
+        question mark by each scenario in the ‘Fish Priority’ tab. Be aware that
+        choosing to additionally filter by any of those same metrics will
+        essentially add weight to that metric that was not specified when the
+        working group determined the relative importance of each metric to the
+        others in the prioritization.
       </p>
       <p>
         To understand each of the following metrics, and their contributing data
         sources, download the
         <a
           style="cursor: pointer; color: blue"
-          @click="navStore.helpTab = 'glossary'"
-          >Metric Glossary</a
-        >
-        and
-        <a
-          style="cursor: pointer; color: blue"
           @click="navStore.helpTab = 'appendix'"
           >Data Source Appendix</a
+        >
+        and the
+        <a
+          style="cursor: pointer; color: blue"
+          @click="navStore.helpTab = 'glossary'"
+          >Metric Glossary</a
         >.
       </p>
     </div>
@@ -110,14 +117,14 @@ onMounted(() => {
         sources, download the
         <a
           style="cursor: pointer; color: blue"
-          @click="navStore.helpTab = 'glossary'"
-          >Metric Glossary</a
-        >
-        and
-        <a
-          style="cursor: pointer; color: blue"
           @click="navStore.helpTab = 'appendix'"
           >Data Source Appendix</a
+        >
+        and the
+        <a
+          style="cursor: pointer; color: blue"
+          @click="navStore.helpTab = 'glossary'"
+          >Metric Glossary</a
         >.
       </p>
     </div>
@@ -126,9 +133,13 @@ onMounted(() => {
       <p>
         Turn on additional reference layers by clicking on the box next to the
         layer name. These layers are for display purposes only and will not
-        filter or in any way impact the crossings on the screen.
+        filter or in any way impact the crossings on the screen. The user can
+        click layers on and off by checking the boxes near the layer title; can
+        change the order of the layers on the map by clicking on the six dots to
+        the left of the layer and dragging into the desired position; can change
+        the opacity of each layer by clicking on the intersecting squares to the
+        right of the layer name.
       </p>
-
       <p>
         To understand each of the following metrics, and their contributing data
         sources, download the
@@ -136,6 +147,12 @@ onMounted(() => {
           style="cursor: pointer; color: blue"
           @click="navStore.helpTab = 'appendix'"
           >Data Source Appendix</a
+        >
+        and the
+        <a
+          style="cursor: pointer; color: blue"
+          @click="navStore.helpTab = 'glossary'"
+          >Metric Glossary</a
         >.
       </p>
     </div>

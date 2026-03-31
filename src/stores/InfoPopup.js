@@ -6,23 +6,23 @@ import { useAuthStore } from './auth'
 
 export const useInfoPopupStore = defineStore('InfoPopup', () => {
   const data = ref([
-    { category: 'About the Crossing', alias: 'Site_ID', field: 'Site_ID' },
-    { category: 'About the Crossing', alias: 'Most Recent Survey Date', field: 'Date_', maskDate: 'Y' },
-    { category: 'About the Crossing', alias: 'Stream', field: 'Stream' },
-    { category: 'About the Crossing', alias: 'Town', field: 'Town' },
-    { category: 'About the Crossing', alias: 'Tributary To', field: 'Tributary_To' },
-    { category: 'About the Crossing', alias: 'Type', field: 'Type' },
-    { category: 'About the Crossing', alias: 'Road Class', field: 'Road_Class' },
-    { category: 'About the Crossing', alias: 'Barrier Class', field: 'Barrier_Class' },
-    { category: 'About the Crossing', alias: 'Dam Name (if applicable)', field: 'Dam_Name' },
-    { category: 'About the Crossing', alias: 'HUC12 Name', field: 'HUC12_Name' },
-    { category: 'About the Crossing', alias: 'HUC12 Code', field: 'HUC12' },
+    { category: 'About the Crossing', alias: 'Site_ID', field: 'Site_ID', helpText: "The unique identifying number for a given barrier." , helpButton: false},
+    { category: 'About the Crossing', alias: 'Most Recent Survey Date', field: 'Date_', maskDate: 'Y', helpText: "The most recent survey data in the database for that given barrier.", helpButton: false },
+    { category: 'About the Crossing', alias: 'Stream', field: 'Stream', helpText: "The name of the stream, if known, on which the barrier is. It is not uncommon for streams to be referred to by multiple names, this merely presents one. ", helpButton: false },
+    { category: 'About the Crossing', alias: 'Town', field: 'Town', helpText: "Refers to the town or township in which the barrier exists. ", helpButton: false },
+    { category: 'About the Crossing', alias: 'Tributary To', field: 'Tributary_To', helpText: "The stream or river into which the stream (that the barrier intersects) flows.", helpButton: false },
+    { category: 'About the Crossing', alias: 'Type', field: 'Type', helpText: "Differentiates whether the barrier is a road-stream crossing or a dam.", helpButton: false },
+    { category: 'About the Crossing', alias: 'Road Class', field: 'Road_Class', helpText:"Refers to the ownership and responsibility for maintenance of the road. For more information, download the", helpButton: true},
+    { category: 'About the Crossing', alias: 'Barrier Class', field: 'Barrier_Class', helpText:"Refers to the degree to which the crossing poses a barrier to aquatic organism passage (AOP) - 'Barrier' indicates no AOP; 'Potential Barrier' indicates reduced AOP; 'No Barrier' indicates full AOP; 'Unknown' indicates not enough data was available to determine passage. For more information, download the ", helpButton: true },
+    { category: 'About the Crossing', alias: 'Dam Name (if applicable)', field: 'Dam_Name', helpText: "A name of the dam, if known. It is not uncommon for dams to be referred to by multiple names, this merely presents one. ", helpButton: false },
+    { category: 'About the Crossing', alias: 'HUC12 Name', field: 'HUC12_Name', helpText: "The official hydrologic unit code name of a particular scale of a watershed, in which the barrier is found.", helpButton: false },
+    { category: 'About the Crossing', alias: 'HUC12 Code', field: 'HUC12', helpText: "The official hydrologic unit code number of a particular scale of a watershed, in which the barrier is found. ", helpButton: false },
     { category: 'About the Crossing', alias: 'HUC10 Name', field: 'HUC10_Name' },
     { category: 'About the Crossing', alias: 'HUC10 Code', field: 'HUC10' },
     { category: 'About the Crossing', alias: 'HUC8 Name', field: 'HUC8_Name' },
     { category: 'About the Crossing', alias: 'HUC6 Name', field: 'HUC6_Name' },
-    { category: 'About the Crossing', alias: 'Passability Score (0-1)', field: 'Passability' },
-    { category: 'About the Crossing', alias: 'Flood Risk Estimate', field: 'FloodRisk' },
+    { category: 'About the Crossing', alias: 'Passability Score (0-1)', field: 'Passability', helpText: "Score ranges from 0 to 1, describing the degree to which that barrier is passable to aquatic organisms. Barriers classified with a score of 0 were considered complete barriers while a score of 1 were considered fully passable. For more information, download the ", helpButton: true },
+    { category: 'About the Crossing', alias: 'Flood Risk Estimate', field: 'FloodRisk', helpText:"The likelihood of a road at the point of a given crossing being overtopped within 30 year. For more information, download the ", helpButton: true },
     { category: 'Prioritization Results', alias: 'Atlantic Salmon- Statewide Tier', field: 'AtlanticSalmon_Statewide_Tier'},
     { category: 'Prioritization Results', alias: 'Atlantic Salmon- HUC8 Tier', field: 'AtlanticSalmon_HUC8_Tier' },
     { category: 'Prioritization Results', alias: 'Atlantic Salmon- HUC10 Tier', field: 'AtlanticSalmon_HUC10_Tier' },
@@ -132,7 +132,7 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
 
   const photoList = computed(() => {
    
-    const authStore = useAuthStore()
+  const authStore = useAuthStore()
     let list = ''
     if (authStore.userAllowed){
      list = internalPhotos[details.value.Site_ID]
@@ -157,6 +157,8 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
       const heading = entry.category
       const alias = entry.alias
       const field = entry.field
+      const helpText = entry.helpText ? entry.helpText : null
+      const helpButton = entry.helpButton ? entry.helpButton : null
       let value = details.value[entry.field] 
       if(entry.maskYN && entry.maskYN == 'Y'){
         value = details.value[entry.field] == 0 ? 'No' : 'Yes'
@@ -171,7 +173,8 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
       if(entry.maskDate && entry.maskDate == 'Y'){
         value = new Date(details.value[entry.field]).toLocaleDateString()
       }
-      // Create a nested structure
+
+            // Create a nested structure
       if (!structuredData[heading]) {
         structuredData[heading] = []
       }
@@ -179,10 +182,12 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
       structuredData[heading].push({
         name: alias,
         field: field,
+        helpText: helpText,
+        helpButton: helpButton,
         value: typeof value == 'number' && value > 0 && !Number.isInteger(value) ? new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 1,
-        minimumFractionDigits: 1
-      }).format(value) : value
+        minimumFractionDigits: 1,
+        }).format(value) : value
       })
     }
 
@@ -195,7 +200,6 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
         download: true
       })
     }
-    console.log(result)
     return result
   })
 
@@ -231,7 +235,8 @@ export const useInfoPopupStore = defineStore('InfoPopup', () => {
         field: field,
         value: typeof value == 'number' && value > 0 && !Number.isInteger(value) ? new Intl.NumberFormat('en-US', {
         maximumFractionDigits: 1,
-        minimumFractionDigits: 1
+        minimumFractionDigits: 1,
+        
       }).format(value) : value
       })
     }

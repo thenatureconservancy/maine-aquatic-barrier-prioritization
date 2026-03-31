@@ -3,9 +3,7 @@ import { ref, onMounted } from "vue";
 import { usePanelNavigationStore } from "../stores/panelNavigation";
 import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
-import Glossary from "./Glossary.vue";
-import Faq from "./Faq.vue";
-import { on } from "@arcgis/core/core/reactiveUtils";
+
 
 const navStore = usePanelNavigationStore();
 </script>
@@ -29,7 +27,7 @@ const navStore = usePanelNavigationStore();
         <q-tab name="appendix" label="data source appendix" />
         <q-tab name="glossary" label="metric glossary" />
         <q-tab name="scenarios" label="fish scenarios" />
-        
+
         <!--q-tab name="faq" label="FAQ" /-->
       </q-tabs>
     </div>
@@ -56,7 +54,7 @@ const navStore = usePanelNavigationStore();
               through the NOAA Habitat Blueprint, Penobscot Habitat Focus Area
               (beginning in 2014). This material is based upon work supported by
               the Natural Resources Conservation Service, U.S. Department of
-              Agriculture, under number NR181218XXXXG001 (YYYY). Any opinions,
+              Agriculture, under number NR181218XXXXG001 (2018). Any opinions,
               findings, conclusions, or recommendations expressed in this
               publication are those of the author(s) and do not necessarily
               reflect the views of the U.S. Department of Agriculture.
@@ -68,16 +66,23 @@ const navStore = usePanelNavigationStore();
             COMPREHENSIVE TOOL REPORT
           </p>
           <p>
-            The tool report includes (but is not limited to) background,
-            approach, data sources and analysis methods, and key limitations. It
-            also includes Appendices detailing the data sources and a glossary
-            of metrics.
+            The tool report includes background, approach, data sources and
+            analysis methods, and key limitations. It also includes Appendices
+            detailing the data sources and a glossary of metric definitions.
           </p>
           <div
             class="bg-grey-1 q-pa-lg text-weight-medium text-primary q-ma-md text-center"
           >
             <p>Download the full tool report here.</p>
-            <q-btn flat primary label="Download" icon="download" size="md">
+            <q-btn
+              href="docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
+              flat
+              primary
+              label="Download"
+              icon="download"
+              size="md"
+              target="_blank"
+            >
             </q-btn>
           </div>
         </q-tab-panel>
@@ -88,8 +93,8 @@ const navStore = usePanelNavigationStore();
 
           <p>
             This appendix details the data utilized in the tool, including what
-            it displays, it's sourcing entity, and the update year used in the
-            tool.
+            each data set represents, it's sourcing entity, and the date of
+            publication.
           </p>
           <div
             class="bg-grey-1 q-pa-lg text-weight-medium text-primary text-center q-ma-md"
@@ -99,11 +104,13 @@ const navStore = usePanelNavigationStore();
               Report).
             </p>
             <q-btn
+              href="docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
               flat
               primary
               label="Download"
               icon="download"
               size="md"
+              target="_blank"
             ></q-btn>
           </div>
         </q-tab-panel>
@@ -113,7 +120,7 @@ const navStore = usePanelNavigationStore();
           </p>
           <p>
             The glossary provides information on each metric used in the tool,
-            and in the data a user can download for the region they've
+            and in the data that a user can download for the region they've
             specified. It gives the field name in the download file, what the
             metric conveys specifically, the units used, and other information.
           </p>
@@ -124,11 +131,14 @@ const navStore = usePanelNavigationStore();
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
             <q-btn
+              href="docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
+              target="_blank"
               flat
               primary
               label="Download"
               icon="download"
               size="md"
+              
             ></q-btn>
           </div>
         </q-tab-panel>
@@ -138,17 +148,16 @@ const navStore = usePanelNavigationStore();
               FISH SCENARIOS
             </p>
             <p>
-              Metrics were weighted and combined (see Section 4.3 of the Tool
-              Report) to produce five different “consensus” prioritization
-              scenarios that were identified by the original project workgroup.
-              Each scenario represents a separate prioritization for a separate
-              objective. A barrier that is a high priority for removal or
-              improved passage in one scenario may be a low priority for removal
-              in another scenario. Further, in some cases, scenarios only
-              included a subset of barriers in the state. For example, the
-              Coastal Anadromous Fish scenario only included those barriers on
-              coastal streams. In other cases, all barriers in the state were
-              included.
+              Metrics were weighted and combined to produce five different
+              prioritization scenarios that were identified by the original
+              project workgroup. Each scenario represents a separate
+              prioritization for a separate objective. A barrier that is a high
+              priority for removal or improved passage in one scenario may be a
+              low priority for removal in another scenario. Further, in some
+              cases, scenarios only included a subset of barriers in the state.
+              For example, the Coastal Anadromous Fish scenario only included
+              those barriers on coastal streams. In other cases, all barriers in
+              the state were included.
             </p>
             <p>
               Each scenario was run for the applicable barriers throughout the
@@ -162,7 +171,6 @@ const navStore = usePanelNavigationStore();
               was applied to barriers to limit which barriers were included.
             </p>
             <fish-scenario-tables></fish-scenario-tables>
-           
           </q-scroll-area>
         </q-tab-panel>
         <q-tab-panel name="toolhelp" class="q-pa-none q-ma-none">

@@ -228,11 +228,12 @@ const shadRows = [
           <p>
             The Coastal Anadromous Fish scenario was designed to prioritize
             barriers whose removal could benefit a suite of coastal anadromous
-            fish species including sea run Brook trout and smelt. The analysis
-            was limited to barriers falling on small coastal streams. Coastal
-            streams were defined as streams with an upstream drainage area less
-            than 100 km2 that drain into a tidal area (directly into the ocean
-            or the tidal portion of a larger river).
+            fish species including sea-run Eastern Brook trout and Rainbow smelt
+            (Osmerus mordax). The analysis was limited to barriers falling on
+            small coastal streams. Coastal streams were defined as streams with
+            an upstream drainage area less than 100 km2 that drain into a tidal
+            area (directly into the ocean or the tidal portion of a larger
+            river).
           </p>
         </q-card-section>
         <q-table
@@ -249,7 +250,7 @@ const shadRows = [
     <q-expansion-item
       header-class="text-body1 text-primary text-weight-medium"
       expand-separator
-      label="Inland Brook Trout"
+      label="Inland Eastern Brook Trout"
       expand-icon-class="text-primary"
       v-model="navStore.inlandExpanded"
       id="inlandExpanded"
@@ -258,10 +259,10 @@ const shadRows = [
         <q-card-section>
           <p>
             The Inland Brook trout scenario was designed to assess barriers
-            whose removal or improvement could benefit Inland Brook trout. It
-            was designed to provide a counter to the coastal anadromous fish
-            scenario and so explicitly excludes the coastal streams that were
-            identified for the coastal anadromous scenario.
+            whose removal or improvement could benefit inland Eastern Brook
+            trout. It was designed to provide a counter to the coastal
+            anadromous fish scenario and so explicitly excludes the coastal
+            streams that were identified for the coastal anadromous scenario.
           </p>
         </q-card-section>
         <q-table
@@ -278,7 +279,7 @@ const shadRows = [
     <q-expansion-item
       expand-separator
       header-class="text-body1 text-primary text-weight-medium"
-      label="ESA Atlantic Salmon"
+      label="Atlantic Salmon"
       expand-icon-class="text-primary"
       v-model="navStore.salmonExpanded"
       id="salmonExpanded"
@@ -286,31 +287,27 @@ const shadRows = [
       <q-card>
         <q-card-section>
           <p>
-            The salmon scenario is focused on identifying barriers to benefit
-            the Endangered Species Act-listed Atlantic salmon. To be included in
-            the salmon scenario, crossings met the following criteria:
+            The Atlantic salmon scenario is focused on identifying barriers to
+            benefit the Endangered Species Act-listed Atlantic salmon. To be
+            included in the salmon scenario, crossings had to meet the following
+            criteria:
           </p>
           <ul>
             <li>
-              If a crossing fell
-              <span style="text-decoration: underline">
-                within the Distinct Population Segment (DPS),</span
-              >
+              If a crossing fell within the Distinct Population Segment (DPS),
               they were pre-filtered using the Critical Habitat HUC10s. Only
               crossings in one of these HUC10s were scored and prioritized.
             </li>
             <li>
-              If a crossing fell
-              <span style="text-decoration: underline">outside the DPS,</span>
-              they were pre-filtered using the HUC10s with streamlines
-              identified by DMR as Medium, High, or Very High quality Atlantic
-              salmon habitat. Only crossings in one of these HUC10s were scored
-              and prioritized.
+              If a crossing fell outside the DPS, they were pre-filtered using
+              the HUC10s that contain streamlines identified as Medium, High, or
+              Very High quality Atlantic salmon habitat. Only crossings in one
+              of these HUC10s were scored and prioritized.
             </li>
           </ul>
           <p>
-            Barriers that met these criteria were prioritized using these
-            metrics and weightings:
+            Barriers that met these criteria were prioritized using the
+            following metrics and weights.
           </p>
         </q-card-section>
         <q-table
@@ -367,9 +364,8 @@ const shadRows = [
       <q-card>
         <q-card-section>
           <p>
-            Finally, American shad and Blueback herring were assessed via a
-            separate scenario from alewife using the weights listed below for
-            all barriers in the state.
+            American shad and Blueback herring were assessed via a separate
+            scenario from alewife using all barriers in the state.
           </p>
         </q-card-section>
         <q-table

@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Analysis from '../views/Analysis.vue'
 
-import Resources from '../views/Resources.vue'
 
 
 const routes = [
@@ -10,11 +9,7 @@ const routes = [
     name: 'analysis',
     component: Analysis
   },
-  {
-    path: '/resources',
-    name: 'resources',
-    component: Resources
-  },
+
  
 ]
 const router = createRouter({
