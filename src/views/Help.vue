@@ -4,8 +4,10 @@ import { usePanelNavigationStore } from "../stores/panelNavigation";
 import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
 
-
 const navStore = usePanelNavigationStore();
+function openPDF(url) {
+  window.open(url, "_blank");
+}
 </script>
 
 <template>
@@ -75,13 +77,16 @@ const navStore = usePanelNavigationStore();
           >
             <p>Download the full tool report here.</p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
+              @click="
+                openPDF(
+                  '/docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf',
+                )
+              "
               flat
               primary
               label="Download"
               icon="download"
               size="md"
-              target="_blank"
             >
             </q-btn>
           </div>
@@ -104,13 +109,16 @@ const navStore = usePanelNavigationStore();
               Report).
             </p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
+              @click="
+                openPDF(
+                  '/docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf',
+                )
+              "
               flat
               primary
               label="Download"
               icon="download"
               size="md"
-              target="_blank"
             ></q-btn>
           </div>
         </q-tab-panel>
@@ -131,14 +139,16 @@ const navStore = usePanelNavigationStore();
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
-              target="_blank"
+              @click="
+                openPDF(
+                  '/docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf',
+                )
+              "
               flat
               primary
               label="Download"
               icon="download"
               size="md"
-              
             ></q-btn>
           </div>
         </q-tab-panel>
