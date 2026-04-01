@@ -1839,7 +1839,7 @@ onMounted(() => {
     esri.mapView
       .hitTest(event, { include: [esri.layer] })
       .then(function (response) {
-        if (response.results.length > 0 && navStore.tab !== "geography") {
+        if (response.results.length > 0 && geographyStore.tab !== "huc8" && geographyStore.tab !== "huc10") {
           let zoomLong = response.results[0].graphic.geometry.longitude;
           let zoomLat = response.results[0].graphic.geometry.latitude;
           let location = new Point(zoomLong, zoomLat);

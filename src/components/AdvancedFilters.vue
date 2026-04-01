@@ -1,10 +1,17 @@
 <script setup>
-import { ref } from 'vue'
-import sparkline from './Sparkline.vue'
-import { useFiltersStore } from '../stores/filters'
-import { useFishPriorityStore } from '../stores/fishPriority'
-let store = useFiltersStore()
-let fishPriorityStore = useFishPriorityStore()
+import { ref } from "vue";
+import sparkline from "./Sparkline.vue";
+import { useFiltersStore } from "../stores/filters";
+import { useFishPriorityStore } from "../stores/fishPriority";
+import { usePanelNavigationStore } from "../stores/panelNavigation";
+const navStore = usePanelNavigationStore();
+let store = useFiltersStore();
+let fishPriorityStore = useFishPriorityStore();
+
+function goToHelp() {
+  navStore.rightDrawerOpen = true;
+  navStore.helpTab = "report";
+}
 </script>
 
 <template>
@@ -20,7 +27,9 @@ let fishPriorityStore = useFishPriorityStore()
       ></q-btn>
     </p>
     <q-space></q-space>
-    <p class="text-primary text-bold q-mr-sm">Results- {{ fishPriorityStore.count }}</p>
+    <p class="text-primary text-bold q-mr-sm">
+      Results- {{ fishPriorityStore.count }}
+    </p>
   </q-toolbar>
   <q-list bordered class="rounded-borders q-mx-md q-mt-xs">
     <q-expansion-item
@@ -36,11 +45,44 @@ let fishPriorityStore = useFishPriorityStore()
     >
       <q-list class="bg-white">
         <q-item v-for="(control, key) in item.children" :key="key">
-          <q-item-section class="q-pr-lg">{{ control.name }}</q-item-section>
+          <q-item-section class="q-pr-lg"
+            >
+            <span v-if="!control.helpText">{{ control.name }}</span>
+            <span v-if="control.helpText">
+              {{ control.name }}
+              <q-btn
+                color="primary"
+                padding="xs"
+                size="xs"
+                flat
+                round
+                icon="info"
+                outline
+              ></q-btn
+              ><q-menu style="width: 350px">
+                <div class="q-ma-md">
+                  <span>
+                    {{ control.helpText }}
+                    <q-btn
+                      v-if="control.helpButton == true"
+                      flat
+                      label="Comprehensive Report"
+                      color="blue-9"
+                      size="sm"
+                      @click="goToHelp()"
+                    ></q-btn
+                  ></span>
+                </div> </q-menu
+            ></span>
+          </q-item-section>
           <q-item-section class="">
             <div
               v-if="control.variableType == 'Binary'"
-              style="display: flex; align-items: center; justify-content: center"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
             >
               <div class="row items-center">
                 <div class="col-9">
@@ -78,7 +120,8 @@ let fishPriorityStore = useFishPriorityStore()
             </div>
             <div
               v-if="
-                control.variableType == 'Categorical' && control.filterType == 'Select one dropdown'
+                control.variableType == 'Categorical' &&
+                control.filterType == 'Select one dropdown'
               "
             >
               <q-select
@@ -95,7 +138,8 @@ let fishPriorityStore = useFishPriorityStore()
             </div>
             <div
               v-if="
-                control.variableType == 'Categorical' && control.filterType == 'Select multiple'
+                control.variableType == 'Categorical' &&
+                control.filterType == 'Select multiple'
               "
             >
               <q-select
@@ -114,14 +158,14 @@ let fishPriorityStore = useFishPriorityStore()
             <div v-if="control.variableType == 'Continuous Range'">
               <span class="text-caption"
                 >{{
-                  new Intl.NumberFormat('en-US', { notation: 'compact' }).format(
-                    control.modRange.min
-                  )
+                  new Intl.NumberFormat("en-US", {
+                    notation: "compact",
+                  }).format(control.modRange.min)
                 }}
                 <span class="float-right q-pr-lg">{{
-                  new Intl.NumberFormat('en-US', { notation: 'compact' }).format(
-                    control.modRange.max
-                  )
+                  new Intl.NumberFormat("en-US", {
+                    notation: "compact",
+                  }).format(control.modRange.max)
                 }}</span></span
               >
 
@@ -142,11 +186,16 @@ let fishPriorityStore = useFishPriorityStore()
                         ? false
                         : true
                     "
-                    :left-label-value="new Intl.NumberFormat('en-US', { notation: 'compact' }).format(
-                    control.model.min)"
-                    :right-label-value="new Intl.NumberFormat('en-US', { notation: 'compact' }).format(
-                      control.model.max
-                    )"
+                    :left-label-value="
+                      new Intl.NumberFormat('en-US', {
+                        notation: 'compact',
+                      }).format(control.model.min)
+                    "
+                    :right-label-value="
+                      new Intl.NumberFormat('en-US', {
+                        notation: 'compact',
+                      }).format(control.model.max)
+                    "
                     v-model="control.model"
                     :min="control.modRange.min"
                     :max="control.modRange.max"
@@ -154,31 +203,29 @@ let fishPriorityStore = useFishPriorityStore()
                     @change="store.updateFilter(control)"
                   ></q-range>
                   <div class="text-center">
-                   <q-btn size="xs" label="custom range" flat color="blue"><q-menu>
-                    <div class="q-pa-md" style="width: 200px">
-                      <q-input
-                        dense
-                        v-model.number="control.model.min"
-                        type="number"
-                        label="Min"
-                        class="q-mb-sm"
-                        @update:model-value="store.updateFilter(control)"
-                       
-                      ></q-input>
-                     
-                      <q-input
-                        dense
-                        v-model.number="control.model.max"
-                        type="number"
-                        label="Max"
-                        class="q-mb-sm"
-                        @update:model-value="
-                         store.updateFilter(control)
-                        "
-                      ></q-input>
-                    </div>
-                   </q-menu></q-btn>
-                   </div>
+                    <q-btn size="xs" label="custom range" flat color="blue"
+                      ><q-menu>
+                        <div class="q-pa-md" style="width: 200px">
+                          <q-input
+                            dense
+                            v-model.number="control.model.min"
+                            type="number"
+                            label="Min"
+                            class="q-mb-sm"
+                            @update:model-value="store.updateFilter(control)"
+                          ></q-input>
+
+                          <q-input
+                            dense
+                            v-model.number="control.model.max"
+                            type="number"
+                            label="Max"
+                            class="q-mb-sm"
+                            @update:model-value="store.updateFilter(control)"
+                          ></q-input>
+                        </div> </q-menu
+                    ></q-btn>
+                  </div>
                   <!--div>
                     <sparkline v-bind:data="control.histogram"></sparkline>
                   </div-->
@@ -198,14 +245,16 @@ let fishPriorityStore = useFishPriorityStore()
                         : 'primary'
                     "
                     @click="
-                      (control.model = { min: control.range.min, max: control.range.max }),
+                      (control.model = {
+                        min: control.range.min,
+                        max: control.range.max,
+                      }),
                         store.updateFilter(control)
                     "
                     ><q-tooltip>clear selection</q-tooltip></q-btn
                   >
                 </div>
               </div>
-              
             </div>
           </q-item-section>
         </q-item>

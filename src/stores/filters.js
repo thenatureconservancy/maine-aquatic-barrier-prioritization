@@ -11,6 +11,8 @@ export const useFiltersStore = defineStore('filters', () => {
       options: ['Barrier', 'Potential Barrier', 'Unknown'],
       attributeField: 'Barrier_Class',
       model: [],
+      helpText: "Refers to the degree to which the crossing poses a barrier to aquatic organism passage (AOP) - 'Barrier' indicates no AOP; 'Potential Barrier' indicates reduced AOP; 'No Barrier' indicates full AOP; 'Unknown' indicates not enough data was available to determine passage. For more information, download the",
+      helpButton: true,
       inUse: false
     },
     {
@@ -18,6 +20,8 @@ export const useFiltersStore = defineStore('filters', () => {
       aliasName: 'Road Class',
       variableType: 'Categorical',
       filterType: 'Select multiple',
+      helpText: "Refers to the ownership and responsibility for maintenance of the road. For more information, download the ",
+      helpButton: true,
       options: [
         'Public',
         'Town',
@@ -39,6 +43,8 @@ export const useFiltersStore = defineStore('filters', () => {
       filterType: 'Select multiple',
       options: ['Crossing', 'Dam'],
       attributeField: 'Type',
+      helpText: "Differentiates whether the barrier is a road-stream crossing or a dam.", 
+      helpButton: false,
       model: [],
       inUse: false
     },
@@ -47,6 +53,8 @@ export const useFiltersStore = defineStore('filters', () => {
       aliasName: 'Town',
       variableType: 'Categorical',
       filterType: 'Select one dropdown',
+      helpText: "Refers to the town or township in which the barrier exists. ", 
+      helpButton: false,
       options: [
         'Abbot',
         'Acton',
@@ -736,9 +744,11 @@ export const useFiltersStore = defineStore('filters', () => {
     },
     {
       filterCategory: 'About the Crossing',
-      aliasName: 'Flood Risk',
+      aliasName: 'Flood Risk Estimate',
       variableType: 'Categorical',
       filterType: 'Select multiple',
+      helpText:"The likelihood of a road at the point of a given crossing being overtopped within 30 year. For more information, download the ", 
+      helpButton: true,
       options: ['High', 'Medium', 'Low', 'Not Available'],
       attributeField: 'FloodRisk',
       model: [],
@@ -747,6 +757,8 @@ export const useFiltersStore = defineStore('filters', () => {
     {
       filterCategory: 'About the Crossing',
       aliasName: 'Tribal Land',
+      helpText: "Refers to whether barrier is on land owned or held in trust by one of the Tribal Nations.",
+      helpButton: false,
       variableType: 'Binary',
       filterType: 'Select one (yes/no)',
       attributeField: 'OnTribalLand',
@@ -997,6 +1009,8 @@ export const useFiltersStore = defineStore('filters', () => {
       const modRange = entry.modRange ? entry.modRange : ''
       const histogram = entry.histogram ? entry.histogram : []
       const useMask = entry.useMask? entry.useMask : false
+      const helpText = entry.helpText ? entry.helpText : ''
+      const helpButton = entry.helpButton ? entry.helpButton : false
       const active = entry.active
 
       // Create a nested structure
@@ -1016,7 +1030,9 @@ export const useFiltersStore = defineStore('filters', () => {
         modRange: modRange,
         histogram: histogram,
         useMask: useMask,
-        inUse: false
+        inUse: false,
+        helpText: helpText,
+        helpButton: helpButton,
       })
     }
 
