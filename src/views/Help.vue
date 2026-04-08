@@ -5,6 +5,16 @@ import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
 
 const navStore = usePanelNavigationStore();
+function downloadReport() {
+  const link = document.createElement("a");
+  link.href =
+    "/docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf";
+  link.download =
+    "MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 </script>
 
 <template>
@@ -14,11 +24,13 @@ const navStore = usePanelNavigationStore();
         v-model="navStore.helpTab"
         :vertical="true"
         class="text-blue-grey-6"
-        active-class="text-primary bg-grey-4">
+        active-class="text-primary bg-grey-4"
+      >
         <q-tab
           name="introduction"
           label="Introduction"
-          class="text-left justify-start" />
+          class="text-left justify-start"
+        />
         <q-tab name="toolhelp" label="Tool Tutorial" />
         <q-tab name="report" label="comprehensive report" />
         <q-tab name="appendix" label="data source appendix" />
@@ -68,16 +80,25 @@ const navStore = usePanelNavigationStore();
             detailing the data sources and a glossary of metric definitions.
           </p>
           <div
-            class="bg-grey-1 q-pa-lg text-weight-medium text-primary q-ma-md text-center">
+            class="bg-grey-1 q-pa-lg text-weight-medium text-primary q-ma-md text-center"
+          >
             <p>Download the full tool report here.</p>
             <q-btn
+              @click="downloadReport()"
+              flat
+              color="primary"
+              label="Download"
+              icon="download"
+              size="md"
+            />
+            <!--q-btn
               href="/docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
               target="_blank"
               flat
               color="primary"
               label="Download"
               icon="download"
-              size="md" />
+              size="md" /-->
           </div>
         </q-tab-panel>
         <q-tab-panel name="appendix">
@@ -91,7 +112,8 @@ const navStore = usePanelNavigationStore();
             publication.
           </p>
           <div
-            class="bg-grey-1 q-pa-lg text-weight-medium text-primary text-center q-ma-md">
+            class="bg-grey-1 q-pa-lg text-weight-medium text-primary text-center q-ma-md"
+          >
             <p>
               Download the Data Source Appendix here (also found in the Tool
               Report).
@@ -103,7 +125,8 @@ const navStore = usePanelNavigationStore();
               color="primary"
               label="Download"
               icon="download"
-              size="md" />
+              size="md"
+            />
           </div>
         </q-tab-panel>
         <q-tab-panel name="glossary">
@@ -117,7 +140,8 @@ const navStore = usePanelNavigationStore();
             metric conveys specifically, the units used, and other information.
           </p>
           <div
-            class="bg-grey-1 q-pa-lg text-weight-medium text-primary text-center q-ma-md">
+            class="bg-grey-1 q-pa-lg text-weight-medium text-primary text-center q-ma-md"
+          >
             <p>
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
@@ -128,7 +152,8 @@ const navStore = usePanelNavigationStore();
               color="primary"
               label="Download"
               icon="download"
-              size="md" />
+              size="md"
+            />
           </div>
         </q-tab-panel>
         <q-tab-panel name="scenarios" class="q-pa-none q-ma-none">
