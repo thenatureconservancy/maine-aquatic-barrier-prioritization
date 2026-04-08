@@ -121,7 +121,7 @@ function getCount() {
 
       fishPriorityStore.speciesSliders[fieldName.updateIndex].statewide = obj*/
       let format = new Intl.NumberFormat().format(
-        response.features[0].attributes.count
+        response.features[0].attributes.count,
       );
       fishPriorityStore.count = format;
       //update fishPriorityStore with min max values
@@ -271,7 +271,7 @@ function updateRenderer(field) {
       },
     };
   } else {
-    esri.layer.title = fishPriorityStore.symbolizeByField.label + ", tier"
+    esri.layer.title = fishPriorityStore.symbolizeByField.label + ", tier";
     esri.layer.renderer = {
       type: "unique-value", // autocasts as new UniqueValueRenderer()
       field: "Type",
@@ -1421,46 +1421,46 @@ watch(
   () => fishPriorityStore.def,
   () => {
     getCount();
-  }
+  },
 );
 
 watch(
   () => filtersStore.def,
   () => {
     getCount();
-  }
+  },
 );
 watch(
   () => fishPriorityStore.symbolizeByField,
   () => {
     updateRenderer(fishPriorityStore.symbolizeByField[geographyStore.tab]);
-  }
+  },
 );
 watch(
   () => store.state.treeState,
   () => {
     updateSupportingVisibility();
-  }
+  },
 );
 watch(
   () => store.state.opacity,
   () => {
     updateSupportingOpacity();
-  }
+  },
 );
 /**geography store */
 watch(
   () => geographyStore.tab,
   () => {
     changeGeography();
-  }
+  },
 );
 watch(
   () => geographyStore.searchTerm,
   () => {
     filterHuc();
     getCount();
-  }
+  },
 );
 //export store
 watch(
@@ -1468,7 +1468,7 @@ watch(
   () => {
     console.log("export store");
     prepDataDownload();
-  }
+  },
 );
 //auth store
 watch(
@@ -1480,7 +1480,7 @@ watch(
     } else {
       loadPublicData();
     }
-  }
+  },
 );
 /**IMPORT ESRI LIBS */
 import Map from "@arcgis/core/Map";
@@ -1606,9 +1606,9 @@ onMounted(() => {
     visibilityAppearance: "checkbox",
     listItemCreatedFunction: function (event) {
       esri.webmap.reorder(esri.layer, esri.webmap.layers.length - 1);
-      esri.webmap.reorder( esri.huc8, esri.webmap.layers.length - 1);
-      esri.webmap.reorder( esri.huc10, esri.webmap.layers.length - 1);
-     
+      esri.webmap.reorder(esri.huc8, esri.webmap.layers.length - 1);
+      esri.webmap.reorder(esri.huc10, esri.webmap.layers.length - 1);
+
       const item = event.item;
 
       // Create a container for the slider
@@ -1642,8 +1642,7 @@ onMounted(() => {
       item.panel = {
         content: wrapper,
         open: false,
-        icon: 'transparency',
-   
+        icon: "transparency",
       };
     },
   });
@@ -1839,7 +1838,7 @@ onMounted(() => {
     esri.mapView
       .hitTest(event, { include: [esri.layer] })
       .then(function (response) {
-        if (response.results.length > 0 && geographyStore.tab !== "huc8" && geographyStore.tab !== "huc10") {
+        if (response.results.length > 0) {
           let zoomLong = response.results[0].graphic.geometry.longitude;
           let zoomLat = response.results[0].graphic.geometry.latitude;
           let location = new Point(zoomLong, zoomLat);
