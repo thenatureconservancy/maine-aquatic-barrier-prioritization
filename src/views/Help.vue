@@ -5,12 +5,10 @@ import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
 
 const navStore = usePanelNavigationStore();
-function downloadReport() {
+function downloadReport(name) {
   const link = document.createElement("a");
-  link.href =
-    "/docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf";
-  link.download =
-    "MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf";
+  link.href = `/docs/${name}`;
+  link.download = name;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -84,7 +82,11 @@ function downloadReport() {
           >
             <p>Download the full tool report here.</p>
             <q-btn
-              @click="downloadReport()"
+              @click="
+                downloadReport(
+                  'MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf',
+                )
+              "
               flat
               color="primary"
               label="Download"
@@ -119,8 +121,11 @@ function downloadReport() {
               Report).
             </p>
             <q-btn
-              href="/docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
-              target="_blank"
+              @click="
+                downloadReport(
+                  'MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf',
+                )
+              "
               flat
               color="primary"
               label="Download"
@@ -146,8 +151,11 @@ function downloadReport() {
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
             <q-btn
-              href="/docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
-              target="_blank"
+              @click="
+                downloadReport(
+                  'MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf',
+                )
+              "
               flat
               color="primary"
               label="Download"
