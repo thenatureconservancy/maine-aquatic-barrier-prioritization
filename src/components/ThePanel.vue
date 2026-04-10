@@ -1,5 +1,5 @@
 <script setup>
-import SupportingLayers from "./SupportingLayers.vue";
+
 import FishPriorities from "./FishPriorities.vue";
 import AdvancedFilters from "./AdvancedFilters.vue";
 import GeographicFilter from "./GeographicFilter.vue";

@@ -246,31 +246,7 @@ const height = ref(window.innerHeight )
 
     <q-page-container>
       <router-view />
-      <q-dialog v-model="showDialog" backdrop-filter="blur(4px)">
-        <q-card>
-          <q-card-section class="bg-blue-grey-1 q-pa-sm">
-            <div class="text-body1 text-bold text-primary"> Welcome to the Emerald Edge Carbon Map</div>
-          </q-card-section>
 
-          <q-card-section class="q-pt-md">
-          
-
-<p>This interactive Carbon Map integrates a suite of forest carbon datasets, with land ownership and land designation information, to help identify actionable forest-based natural climate solutions (NCS) and opportunities for sequestering carbon.</p>
-
- 
-
-<p>Please note that this product is currently in "beta" testing and does not yet reflect stewardship practices and traditional knowledge of Indigenous and local communities. The Nature Conservancy and Nature United are ready and available to support NCS projects that incorporate and reflect local and Indigenous knowledge, perspectives and priorities that go beyond the current capabilities of the Carbon Map.</p>
-
- 
-
-<p>Visit <a href=https://www.nature.org/en-us/about-us/where-we-work/priority-landscapes/emerald-edge/>nature.org</a> to learn more about our values and principles.</p>
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="OK" color="primary" v-close-popup />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
     </q-page-container>
         <q-drawer class="shadow-5 no-scroll full-height" overlay v-model="panelStore.rightDrawerOpen" side="right" :width="width" :height="height" bordered>
      

@@ -2,8 +2,6 @@
 import { ref, onMounted, onActivated, computed, watch, reactive } from "vue";
 
 /**GET STORE */
-import { useSupportingLayersStore } from "../stores/supportingLayers";
-const store = useSupportingLayersStore();
 import { useFishPriorityStore } from "../stores/fishPriority";
 const fishPriorityStore = useFishPriorityStore();
 import { useGeographyStore } from "../stores/geography";
@@ -1397,6 +1395,12 @@ function esriHistogram(field) {
     console.log(arr);
   });
 }
+function zoomHome(){
+const vp = esri.webmap.initialViewProperties.viewpoint;
+  if (vp) {
+    esri.mapView.goTo(vp);
+  }
+}
 
 const esri = {
   mapView: "",
@@ -1436,18 +1440,8 @@ watch(
     updateRenderer(fishPriorityStore.symbolizeByField[geographyStore.tab]);
   },
 );
-watch(
-  () => store.state.treeState,
-  () => {
-    updateSupportingVisibility();
-  },
-);
-watch(
-  () => store.state.opacity,
-  () => {
-    updateSupportingOpacity();
-  },
-);
+
+
 /**geography store */
 watch(
   () => geographyStore.tab,
@@ -1957,6 +1951,17 @@ onMounted(() => {
 
 <template>
   <div id="map" ref="map">
+     <q-btn
+      style="position: absolute; top: 100px; left: 15px; z-index: 999"
+      color="white"
+      square=""
+      size=""
+      padding="5px"
+      icon="home"
+      @click="zoomHome()"
+      :ripple="false"
+      text-color="primary"
+    ></q-btn>
     <q-btn
       style="position: absolute; top: 10px; right: 10px; z-index: 999"
       color="white"
@@ -2112,14 +2117,7 @@ esri-expand__content esri-expand__content--expanded div {
 .esri-widget *:focus {
   outline: none !important;
 }
-.esri-popup__content {
-  max-height: 300px; /* or whatever height you want */
-  overflow-y: auto !important;
-}
-.esri-popup__main-container {
-  max-height: 400px;
-}
-.esri-popup__content-inner {
-  overflow-y: auto !important;
+.esri-features__content-feature{
+  height: 300px !important;
 }
 </style>
