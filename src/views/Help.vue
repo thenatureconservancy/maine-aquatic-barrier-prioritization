@@ -74,7 +74,7 @@ const navStore = usePanelNavigationStore();
           >
             <p>Download the full tool report here.</p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
+              href="/docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
               target="_blank"
               flat
               color="primary"
@@ -110,7 +110,7 @@ const navStore = usePanelNavigationStore();
               Report).
             </p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
+              href="/docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
               target="_blank"
               flat
               color="primary"
@@ -137,7 +137,7 @@ const navStore = usePanelNavigationStore();
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
             <q-btn
-              href="docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
+              href="/docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
               target="_blank"
               flat
               color="primary"
