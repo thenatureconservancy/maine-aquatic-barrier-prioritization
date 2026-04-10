@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import { usePanelNavigationStore } from "../stores/panelNavigation";
 import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
-
+//import Faq from "@/components/Faq.vue";
 const navStore = usePanelNavigationStore();
 </script>
 
