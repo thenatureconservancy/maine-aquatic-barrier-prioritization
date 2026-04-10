@@ -5,14 +5,6 @@ import ToolHelp from "@/components/ToolHelp.vue";
 import FishScenarioTables from "@/components/FishScenarioTables.vue";
 
 const navStore = usePanelNavigationStore();
-function downloadReport(name) {
-  const link = document.createElement("a");
-  link.href = `/docs/${name}`;
-  link.download = name;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
 </script>
 
 <template>
@@ -82,11 +74,8 @@ function downloadReport(name) {
           >
             <p>Download the full tool report here.</p>
             <q-btn
-              @click="
-                downloadReport(
-                  'MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf',
-                )
-              "
+              href="docs/MaineAquaticBarrierPrioritizationTool_Report_WithAppendices_Final.pdf"
+              target="_blank"
               flat
               color="primary"
               label="Download"
@@ -121,11 +110,8 @@ function downloadReport(name) {
               Report).
             </p>
             <q-btn
-              @click="
-                downloadReport(
-                  'MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf',
-                )
-              "
+              href="docs/MaineAquaticBarrierPrioritizationTool_Data Source Appendix_Final.pdf"
+              target="_blank"
               flat
               color="primary"
               label="Download"
@@ -151,11 +137,8 @@ function downloadReport(name) {
               Download the Metric Glossary here (also found in the Tool Report).
             </p>
             <q-btn
-              @click="
-                downloadReport(
-                  'MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf',
-                )
-              "
+              href="docs/MaineAquaticBarrierPrioritizationTool_Metrics_Glossary_Final.pdf"
+              target="_blank"
               flat
               color="primary"
               label="Download"
