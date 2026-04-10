@@ -2112,4 +2112,14 @@ esri-expand__content esri-expand__content--expanded div {
 .esri-widget *:focus {
   outline: none !important;
 }
+.esri-popup__content {
+  max-height: 300px; /* or whatever height you want */
+  overflow-y: auto !important;
+}
+.esri-popup__main-container {
+  max-height: 400px;
+}
+.esri-popup__content-inner {
+  overflow-y: auto !important;
+}
 </style>
